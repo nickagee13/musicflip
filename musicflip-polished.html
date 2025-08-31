@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MusicFlip - Share Music Across All Platforms</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Brand Colors */
+            --primary-conversion: #1DB584;
+            --trust-white: #FFFFFF;
+            --deep-audio: #0F1419;
+            --conversion-gray: #F8F9FA;
+            
+            /* Platform Colors */
+            --spotify-green: #1DB954;
+            --apple-red: #FA243C;
+            --youtube-red: #FF0000;
+            --amazon-orange: #FF9900;
+            --tidal-cyan: #00D4AA;
+            --soundcloud-orange: #FF5500;
+            
+            /* Functional Colors */
+            --success-moment: #00E676;
+            --progress-amber: #FF8F00;
+            --content-primary: #1A1A1D;
+            --content-secondary: #4A5568;
+            --content-tertiary: #9E9E9E;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: var(--content-primary);
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-content {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--trust-white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            letter-spacing: -0.3px;
+        }
+
+        .logo-icon {
+            font-size: 1.5rem;
+            animation: musicPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes musicPulse {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.1) rotate(5deg); }
+            75% { transform: scale(1.1) rotate(-5deg); }
+        }
+
+        .tagline {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            font-weight: 400;
+        }
+
+        /* Main Container */
+        .container {
+            flex: 1;
+            max-width: 600px;
+            margin: 3rem auto;
+            padding: 0 1.5rem;
+            width: 100%;
+        }
+
+        /* Card */
+        .card {
+            background: var(--trust-white);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--spotify-green), var(--apple-red), var(--youtube-red), var(--tidal-cyan));
+            animation: colorWave 3s ease-in-out infinite;
+        }
+
+        @keyframes colorWave {
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
+        }
+
+        /* Input Section */
+        .input-section {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .input-section.hidden {
+            display: none;
+        }
+
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--content-primary);
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .section-description {
+            color: var(--content-secondary);
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .input-wrapper {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .link-input {
+            width: 100%;
+            padding: 1.25rem 1.5rem;
+            font-size: 1rem;
+            border: 2px solid #E2E8F0;
+            border-radius: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--trust-white);
+        }
+
+        .link-input:focus {
+            outline: none;
+            border-color: var(--primary-conversion);
+            box-shadow: 0 0 0 4px rgba(29, 181, 132, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .link-input.has-content {
+            padding-right: 3.5rem;
+        }
+
+        .clear-btn {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.05);
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .link-input.has-content ~ .clear-btn {
+            display: flex;
+        }
+
+        .clear-btn:hover {
+            background: rgba(0, 0, 0, 0.1);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .convert-btn {
+            width: 100%;
+            padding: 1.25rem 2rem;
+            background: linear-gradient(135deg, var(--primary-conversion) 0%, var(--spotify-green) 100%);
+            color: var(--trust-white);
+            border: none;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .convert-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(29, 181, 132, 0.3);
+        }
+
+        .convert-btn:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .convert-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .convert-btn.loading {
+            color: transparent;
+        }
+
+        /* Platform Detection Badge */
+        .platform-detected {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(-10px);
+            animation: slideIn 0.4s ease forwards;
+        }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .platform-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--trust-white);
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border: 2px solid;
+        }
+
+        .platform-badge.spotify { 
+            border-color: var(--spotify-green);
+            color: var(--spotify-green);
+        }
+        
+        .platform-badge.apple { 
+            border-color: var(--apple-red);
+            color: var(--apple-red);
+        }
+        
+        .platform-badge.youtube { 
+            border-color: var(--youtube-red);
+            color: var(--youtube-red);
+        }
+        
+        .platform-badge.tidal { 
+            border-color: var(--tidal-cyan);
+            color: var(--tidal-cyan);
+        }
+
+        /* Loading Animation */
+        .loading-container {
+            display: none;
+            text-align: center;
+            padding: 3rem 0;
+        }
+
+        .loading-container.active {
+            display: block;
+        }
+
+        .music-bars {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 4px;
+            height: 40px;
+            margin-bottom: 1.5rem;
+        }
+
+        .bar {
+            width: 4px;
+            background: linear-gradient(to top, var(--primary-conversion), var(--spotify-green));
+            border-radius: 2px;
+            animation: musicBar 0.8s ease-in-out infinite;
+        }
+
+        .bar:nth-child(1) { animation-delay: 0s; }
+        .bar:nth-child(2) { animation-delay: 0.1s; }
+        .bar:nth-child(3) { animation-delay: 0.2s; }
+        .bar:nth-child(4) { animation-delay: 0.3s; }
+        .bar:nth-child(5) { animation-delay: 0.4s; }
+
+        @keyframes musicBar {
+            0%, 100% { height: 10px; }
+            50% { height: 30px; }
+        }
+
+        .loading-text {
+            color: var(--content-secondary);
+            font-size: 0.95rem;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        /* Result Section */
+        .result-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .result-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .track-preview {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .album-art {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary-conversion), var(--spotify-green));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .track-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .track-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--content-primary);
+            margin-bottom: 0.25rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .track-artist {
+            font-size: 0.95rem;
+            color: var(--content-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .track-album {
+            font-size: 0.875rem;
+            color: var(--content-tertiary);
+            margin-top: 0.25rem;
+        }
+
+        /* Platform Grid */
+        .platforms-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .platform-btn {
+            background: var(--trust-white);
+            border: 2px solid #E2E8F0;
+            border-radius: 16px;
+            padding: 1.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .platform-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .platform-btn.copied {
+            animation: copySuccess 0.6s ease;
+        }
+
+        @keyframes copySuccess {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .platform-btn.copied::after {
+            content: '✓ Copied!';
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: var(--success-moment);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            animation: fadeOut 2s ease forwards;
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 0; transform: scale(0.8); }
+            10% { opacity: 1; transform: scale(1); }
+            90% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(0.8); }
+        }
+
+        .platform-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .platform-btn:hover .platform-icon {
+            transform: rotate(10deg) scale(1.1);
+        }
+
+        .platform-btn.spotify .platform-icon { background: var(--spotify-green); }
+        .platform-btn.apple .platform-icon { background: var(--apple-red); }
+        .platform-btn.youtube .platform-icon { background: var(--youtube-red); }
+        .platform-btn.amazon .platform-icon { background: var(--amazon-orange); }
+        .platform-btn.tidal .platform-icon { background: var(--tidal-cyan); }
+        .platform-btn.soundcloud .platform-icon { background: var(--soundcloud-orange); }
+
+        .platform-name {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--content-primary);
+        }
+
+        .reset-btn {
+            width: 100%;
+            padding: 1rem;
+            background: transparent;
+            color: var(--content-secondary);
+            border: 2px solid #E2E8F0;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .reset-btn:hover {
+            background: var(--conversion-gray);
+            color: var(--content-primary);
+            border-color: var(--content-secondary);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.875rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .card {
+                padding: 1.5rem;
+            }
+            
+            .platforms-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h1 class="logo">
+                <span class="logo-icon">🎵</span>
+                MusicFlip
+            </h1>
+            <p class="tagline">Share music across all platforms</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="card">
+            <!-- Input Section -->
+            <div class="input-section" id="inputSection">
+                <h2 class="section-title">Paste any music link</h2>
+                <p class="section-description">
+                    Convert Spotify, Apple Music, YouTube links into universal ones that work for everyone
+                </p>
+                
+                <div class="input-wrapper">
+                    <input 
+                        type="url" 
+                        class="link-input" 
+                        id="linkInput"
+                        placeholder="https://open.spotify.com/track/..."
+                        autocomplete="off"
+                    >
+                    <button class="clear-btn" id="clearBtn">✕</button>
+                </div>
+                
+                <button class="convert-btn" id="convertBtn" disabled>
+                    <span class="btn-text">Convert</span>
+                </button>
+                
+                <div id="platformDetected"></div>
+            </div>
+
+            <!-- Loading Section -->
+            <div class="loading-container" id="loadingSection">
+                <div class="music-bars">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+                <p class="loading-text">Finding your music across platforms...</p>
+            </div>
+
+            <!-- Result Section -->
+            <div class="result-section" id="resultSection">
+                <div class="track-preview">
+                    <div class="album-art">🎵</div>
+                    <div class="track-info">
+                        <div class="track-title" id="trackTitle">Anti-Hero</div>
+                        <div class="track-artist" id="trackArtist">Taylor Swift</div>
+                        <div class="track-album" id="trackAlbum">Midnights</div>
+                    </div>
+                </div>
+
+                <p class="section-description">
+                    Click any platform to copy its link to your clipboard
+                </p>
+
+                <div class="platforms-grid">
+                    <button class="platform-btn spotify" data-platform="spotify">
+                        <div class="platform-icon">S</div>
+                        <span class="platform-name">Spotify</span>
+                    </button>
+                    <button class="platform-btn apple" data-platform="apple">
+                        <div class="platform-icon">A</div>
+                        <span class="platform-name">Apple Music</span>
+                    </button>
+                    <button class="platform-btn youtube" data-platform="youtube">
+                        <div class="platform-icon">Y</div>
+                        <span class="platform-name">YouTube</span>
+                    </button>
+                    <button class="platform-btn amazon" data-platform="amazon">
+                        <div class="platform-icon">A</div>
+                        <span class="platform-name">Amazon</span>
+                    </button>
+                    <button class="platform-btn tidal" data-platform="tidal">
+                        <div class="platform-icon">T</div>
+                        <span class="platform-name">Tidal</span>
+                    </button>
+                    <button class="platform-btn soundcloud" data-platform="soundcloud">
+                        <div class="platform-icon">S</div>
+                        <span class="platform-name">SoundCloud</span>
+                    </button>
+                </div>
+
+                <button class="reset-btn" id="resetBtn">Convert Another Song</button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>© 2024 MusicFlip. Share music, not frustration.</p>
+    </footer>
+
+    <script>
+        // DOM Elements
+        const linkInput = document.getElementById('linkInput');
+        const clearBtn = document.getElementById('clearBtn');
+        const convertBtn = document.getElementById('convertBtn');
+        const inputSection = document.getElementById('inputSection');
+        const loadingSection = document.getElementById('loadingSection');
+        const resultSection = document.getElementById('resultSection');
+        const platformDetected = document.getElementById('platformDetected');
+        const resetBtn = document.getElementById('resetBtn');
+        const platformBtns = document.querySelectorAll('.platform-btn');
+
+        // Platform detection patterns
+        const platforms = {
+            spotify: {
+                pattern: /spotify\.com/,
+                name: 'Spotify',
+                icon: '🎵'
+            },
+            apple: {
+                pattern: /music\.apple\.com|itunes\.apple\.com/,
+                name: 'Apple Music',
+                icon: '🍎'
+            },
+            youtube: {
+                pattern: /youtube\.com|youtu\.be|music\.youtube\.com/,
+                name: 'YouTube',
+                icon: '📺'
+            },
+            tidal: {
+                pattern: /tidal\.com/,
+                name: 'Tidal',
+                icon: '🌊'
+            },
+            amazon: {
+                pattern: /music\.amazon\.com|amazon\.com/,
+                name: 'Amazon Music',
+                icon: '📦'
+            },
+            soundcloud: {
+                pattern: /soundcloud\.com/,
+                name: 'SoundCloud',
+                icon: '☁️'
+            }
+        };
+
+        // Handle input changes
+        linkInput.addEventListener('input', (e) => {
+            const value = e.target.value.trim();
+            
+            // Toggle clear button
+            if (value) {
+                linkInput.classList.add('has-content');
+                convertBtn.disabled = false;
+            } else {
+                linkInput.classList.remove('has-content');
+                convertBtn.disabled = true;
+                platformDetected.innerHTML = '';
+            }
+
+            // Detect platform
+            detectPlatform(value);
+        });
+
+        // Clear input
+        clearBtn.addEventListener('click', () => {
+            linkInput.value = '';
+            linkInput.classList.remove('has-content');
+            convertBtn.disabled = true;
+            platformDetected.innerHTML = '';
+            linkInput.focus();
+        });
+
+        // Detect platform from URL
+        function detectPlatform(url) {
+            if (!url) {
+                platformDetected.innerHTML = '';
+                return;
+            }
+
+            for (const [key, platform] of Object.entries(platforms)) {
+                if (platform.pattern.test(url)) {
+                    platformDetected.innerHTML = `
+                        <div class="platform-detected">
+                            <div class="platform-badge ${key}">
+                                <span>${platform.icon}</span>
+                                <span>${platform.name} detected</span>
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+            }
+            
+            platformDetected.innerHTML = '';
+        }
+
+        // Handle conversion
+        convertBtn.addEventListener('click', () => {
+            if (linkInput.value.trim()) {
+                // Show loading
+                inputSection.classList.add('hidden');
+                loadingSection.classList.add('active');
+
+                // Simulate API call
+                setTimeout(() => {
+                    loadingSection.classList.remove('active');
+                    resultSection.classList.add('active');
+                    
+                    // Update track info (this would come from your backend)
+                    // For now using dummy data
+                }, 2000);
+            }
+        });
+
+        // Handle platform button clicks
+        platformBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const platform = btn.dataset.platform;
+                
+                // Copy to clipboard (in real app, this would be the actual converted link)
+                const dummyLink = `https://${platform}.com/track/converted-link`;
+                navigator.clipboard.writeText(dummyLink).then(() => {
+                    // Add copied animation
+                    btn.classList.add('copied');
+                    setTimeout(() => {
+                        btn.classList.remove('copied');
+                    }, 2500);
+                });
+            });
+        });
+
+        // Reset to convert another song
+        resetBtn.addEventListener('click', () => {
+            linkInput.value = '';
+            linkInput.classList.remove('has-content');
+            convertBtn.disabled = true;
+            platformDetected.innerHTML = '';
+            
+            resultSection.classList.remove('active');
+            inputSection.classList.remove('hidden');
+            
+            linkInput.focus();
+        });
+
+        // Handle Enter key
+        linkInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !convertBtn.disabled) {
+                convertBtn.click();
+            }
+        });
+    </script>
+</body>
+</html>

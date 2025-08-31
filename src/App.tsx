@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { Settings, X, Moon, Sun, Music, Apple, Play, Package, Waves, Music2, Music3 } from 'lucide-react'
 import './App.css'
 
 // Import streaming service logos
@@ -12,6 +13,7 @@ import deezerLogo from './assets/streaming-services-logos/deezer-logo.png'
 // Dummy data for demonstration
 const dummyConversion = {
   originalPlatform: 'Spotify',
+  type: 'song', // 'song' or 'album'
   songTitle: 'Anti-Hero',
   artist: 'Taylor Swift',
   album: 'Midnights',
@@ -31,14 +33,14 @@ const platforms = [
   { id: 'spotify', name: 'Spotify', logo: spotifyLogo, color: '#1DB954' },
   { id: 'apple', name: 'Apple Music', logo: appleMusicLogo, color: '#FA243C' },
   { id: 'youtube', name: 'YouTube Music', logo: youtubeMusicLogo, color: '#FF0000' },
-  { id: 'amazonMusic', name: 'Amazon Music', logo: amazonMusicLogo, color: '#FF6B35' },
-  { id: 'tidal', name: 'Tidal', logo: tidalLogo, color: '#00FFFF' },
+  { id: 'amazonMusic', name: 'Amazon Music', logo: amazonMusicLogo, color: '#FF9900' },
+  { id: 'tidal', name: 'Tidal', logo: tidalLogo, color: '#00D4AA' },
   { id: 'deezer', name: 'Deezer', logo: deezerLogo, color: '#FEAA2D' }
 ]
 
 type DetectedPlatform = {
   name: string;
-  icon: string;
+  icon: React.ComponentType<{ size?: number }>;
   logo: string;
   color: string;
   bgColor: string;
@@ -49,53 +51,80 @@ function App() {
   const [isConverted, setIsConverted] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [copiedPlatform, setCopiedPlatform] = useState<string | null>(null)
-  const [isTransitioning, setIsTransitioning] = useState(false)
   const [detectedPlatform, setDetectedPlatform] = useState<DetectedPlatform>(null)
-  const [inputFocused, setInputFocused] = useState(false)
-  const [isValidUrl, setIsValidUrl] = useState(true)
+  const [theme, setTheme] = useState<'dark' | 'light'>('dark')
+  const [settingsOpen, setSettingsOpen] = useState(false)
+  const [autoDetect, setAutoDetect] = useState(true)
+  const [showNotifications, setShowNotifications] = useState(true)
+  const [openLinksInNewTab, setOpenLinksInNewTab] = useState(true)
+  const [autoClearInput, setAutoClearInput] = useState(false)
+  const [showPlatformIcons, setShowPlatformIcons] = useState(true)
+  const [originalPlatform, setOriginalPlatform] = useState<DetectedPlatform>(null)
+
+  // Initialize theme
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme)
+  }, [theme])
+
+  // Close settings when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (settingsOpen && !(event.target as Element).closest('.settings-container')) {
+        setSettingsOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [settingsOpen])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (!inputLink.trim()) return
     
     setIsLoading(true)
-    setIsTransitioning(true)
+    // Store the detected platform for the result section
+    setOriginalPlatform(detectedPlatform)
+    
     // Simulate API call
     setTimeout(() => {
       setIsLoading(false)
-      setTimeout(() => {
-        setIsConverted(true)
-        setIsTransitioning(false)
-      }, 300) // Small delay for smooth transition
-    }, 1500)
+      setIsConverted(true)
+      if (autoClearInput) {
+        setInputLink('')
+        setDetectedPlatform(null)
+      }
+    }, 2000)
   }
 
   const handleReset = () => {
-    setIsTransitioning(true)
-    setTimeout(() => {
-      setInputLink('')
-      setIsConverted(false)
-      setIsLoading(false)
-      setCopiedPlatform(null)
-      setIsTransitioning(false)
-    }, 300)
+    setInputLink('')
+    setIsConverted(false)
+    setIsLoading(false)
+    setCopiedPlatform(null)
+    setDetectedPlatform(null)
+    setOriginalPlatform(null)
+  }
+
+  const handleClear = () => {
+    setInputLink('')
+    setDetectedPlatform(null)
   }
 
   const detectPlatform = (url: string): DetectedPlatform => {
     if (!url) return null;
     
     if (url.includes('spotify.com')) {
-      return { name: 'Spotify', icon: '🎵', logo: spotifyLogo, color: '#1DB954', bgColor: '#f0fff4' };
+      return { name: 'Spotify', icon: Music, logo: spotifyLogo, color: '#1DB954', bgColor: '#f0fff4' };
     } else if (url.includes('music.apple.com') || url.includes('itunes.apple.com')) {
-      return { name: 'Apple Music', icon: '🍎', logo: appleMusicLogo, color: '#FC3C44', bgColor: '#fff5f5' };
+      return { name: 'Apple Music', icon: Apple, logo: appleMusicLogo, color: '#FC3C44', bgColor: '#fff5f5' };
     } else if (url.includes('music.youtube.com') || url.includes('youtube.com')) {
-      return { name: 'YouTube Music', icon: '📺', logo: youtubeMusicLogo, color: '#FF0000', bgColor: '#fff5f5' };
+      return { name: 'YouTube Music', icon: Play, logo: youtubeMusicLogo, color: '#FF0000', bgColor: '#fff5f5' };
     } else if (url.includes('music.amazon.com') || url.includes('amazon.com')) {
-      return { name: 'Amazon Music', icon: '📦', logo: amazonMusicLogo, color: '#FF9900', bgColor: '#fffbf0' };
+      return { name: 'Amazon Music', icon: Package, logo: amazonMusicLogo, color: '#FF9900', bgColor: '#fffbf0' };
     } else if (url.includes('tidal.com') || url.includes('listen.tidal.com')) {
-      return { name: 'Tidal', icon: '🌊', logo: tidalLogo, color: '#00D4AA', bgColor: '#f0fffe' };
+      return { name: 'Tidal', icon: Waves, logo: tidalLogo, color: '#00D4AA', bgColor: '#f0fffe' };
     } else if (url.includes('deezer.com')) {
-      return { name: 'Deezer', icon: '🎶', logo: deezerLogo, color: '#FEAA2D', bgColor: '#fffcf5' };
+      return { name: 'Deezer', icon: Music2, logo: deezerLogo, color: '#FEAA2D', bgColor: '#fffcf5' };
     }
     return null;
   };
@@ -103,180 +132,288 @@ function App() {
   const copyPlatformLink = (platform: string, url: string) => {
     navigator.clipboard.writeText(url)
     setCopiedPlatform(platform)
-    // Reset the copied state after 2 seconds
-    setTimeout(() => setCopiedPlatform(null), 2000)
+    // Reset the copied state after 2.5 seconds
+    setTimeout(() => setCopiedPlatform(null), 2500)
+  }
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setInputLink(value);
+    setDetectedPlatform(detectPlatform(value));
+  }
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && inputLink.trim()) {
+      e.preventDefault()
+      const formEvent = {
+        preventDefault: () => {}
+      } as React.FormEvent<HTMLFormElement>;
+      handleSubmit(formEvent)
+    }
   }
 
   return (
-    <div className="app">
+    <div>
+      {/* Settings Menu */}
+      <div className="settings-container">
+        <button 
+          className={`settings-button ${settingsOpen ? 'open' : ''}`}
+          onClick={() => setSettingsOpen(!settingsOpen)}
+          title="Settings"
+        >
+          <div className="settings-icon">
+            <Settings size={20} />
+          </div>
+        </button>
+        
+        <div className={`settings-dropdown ${settingsOpen ? 'open' : ''}`}>
+          {/* Theme Selection */}
+          <div className="settings-section">
+            <label className="settings-label">Theme</label>
+            <div className="settings-group">
+              <button 
+                className={`theme-option ${theme === 'dark' ? 'active' : ''}`}
+                onClick={() => setTheme('dark')}
+              >
+                <Moon size={16} />
+                <span>Dark</span>
+              </button>
+              <button 
+                className={`theme-option ${theme === 'light' ? 'active' : ''}`}
+                onClick={() => setTheme('light')}
+              >
+                <Sun size={16} />
+                <span>Light</span>
+              </button>
+            </div>
+          </div>
+          
+          {/* Auto-detect Platform */}
+          <div className="settings-section">
+            <div className="settings-toggle">
+              <span className="settings-toggle-label">Auto-detect Platform</span>
+              <div 
+                className={`toggle-switch ${autoDetect ? 'active' : ''}`}
+                onClick={() => setAutoDetect(!autoDetect)}
+              />
+            </div>
+          </div>
+          
+          {/* Show Copy Notifications */}
+          <div className="settings-section">
+            <div className="settings-toggle">
+              <span className="settings-toggle-label">Copy Notifications</span>
+              <div 
+                className={`toggle-switch ${showNotifications ? 'active' : ''}`}
+                onClick={() => setShowNotifications(!showNotifications)}
+              />
+            </div>
+          </div>
+          
+          {/* Open Links in New Tab */}
+          <div className="settings-section">
+            <div className="settings-toggle">
+              <span className="settings-toggle-label">Open Links in New Tab</span>
+              <div 
+                className={`toggle-switch ${openLinksInNewTab ? 'active' : ''}`}
+                onClick={() => setOpenLinksInNewTab(!openLinksInNewTab)}
+              />
+            </div>
+          </div>
+          
+          {/* Auto Clear Input */}
+          <div className="settings-section">
+            <div className="settings-toggle">
+              <span className="settings-toggle-label">Auto-clear Input After Convert</span>
+              <div 
+                className={`toggle-switch ${autoClearInput ? 'active' : ''}`}
+                onClick={() => setAutoClearInput(!autoClearInput)}
+              />
+            </div>
+          </div>
+          
+          {/* Show Platform Icons */}
+          <div className="settings-section">
+            <div className="settings-toggle">
+              <span className="settings-toggle-label">Show Platform Logos</span>
+              <div 
+                className={`toggle-switch ${showPlatformIcons ? 'active' : ''}`}
+                onClick={() => setShowPlatformIcons(!showPlatformIcons)}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Header */}
       <header className="header">
-        <div className="container">
-          <h1 className="logo">🎵 MusicFlip</h1>
+        <div className="header-content">
+          <h1 className="logo">
+            <span className="logo-icon">
+              <Music size={24} />
+            </span>
+            MusicFlip
+          </h1>
           <p className="tagline">Share music across all platforms</p>
         </div>
       </header>
 
-      <main className="main">
-        <div className="container">
-          <div className="screen-container">
-            <section className={`input-section ${isConverted ? 'hidden' : 'visible'} ${isTransitioning ? 'transitioning' : ''}`}>
-              <div className="hero">
-                <h2>Paste any music link</h2>
-                <p>Convert Spotify, Apple Music, YouTube links into universal ones that work for everyone</p>
-              </div>
-
-              <form onSubmit={handleSubmit} className="link-form">
-                <div className="input-group">
-                  <input
-                    type="url"
+      {/* Main Content */}
+      <main className="container">
+        <div className={`card ${originalPlatform ? `platform-${originalPlatform.name.toLowerCase().replace(/\s+/g, '')}` : ''}`}>
+          {originalPlatform && (
+            <style>{`
+              .card.platform-${originalPlatform.name.toLowerCase().replace(/\s+/g, '')}::before {
+                background: linear-gradient(90deg, ${originalPlatform.color}, ${originalPlatform.color}) !important;
+              }
+            `}</style>
+          )}
+          {/* Input Section */}
+          {!isLoading && !isConverted && (
+            <div className="input-section">
+              <h2 className="section-title">Paste any music link</h2>
+              <p className="section-description">
+                Convert Spotify, Apple Music, YouTube links into universal ones that work for everyone
+              </p>
+              
+              <form onSubmit={handleSubmit}>
+                <div className="input-wrapper">
+                  <input 
+                    type="url" 
+                    className={`link-input ${inputLink ? 'has-content' : ''}`}
                     placeholder="https://open.spotify.com/track/..."
                     value={inputLink}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      setInputLink(value);
-                      setDetectedPlatform(detectPlatform(value));
-                      
-                      // Simple URL validation
-                      const urlPattern = /^https?:\/\/.+/;
-                      setIsValidUrl(!value || urlPattern.test(value));
-                    }}
-                    onFocus={() => setInputFocused(true)}
-                    onBlur={() => setInputFocused(false)}
-                    className={`link-input ${inputFocused ? 'focused' : ''} ${!isValidUrl ? 'invalid' : ''} ${detectedPlatform ? 'platform-detected-input' : ''}`}
-                    style={{
-                      '--platform-color': detectedPlatform?.color || '#667eea'
-                    } as React.CSSProperties}
-                    disabled={isLoading}
+                    onChange={handleInputChange}
+                    onKeyDown={handleKeyPress}
+                    autoComplete="off"
                   />
                   <button 
-                    type="submit" 
-                    className="submit-btn"
-                    disabled={isLoading || !inputLink.trim()}
+                    type="button" 
+                    className="clear-btn" 
+                    onClick={handleClear}
                   >
-                    {isLoading ? 'Converting...' : 'Convert'}
+                    <X size={16} />
                   </button>
                 </div>
                 
-                {detectedPlatform && (
-                  <div className="platform-detected">
-                    <div 
-                      className="platform-badge animated"
-                      style={{ 
-                        background: detectedPlatform.color,
-                        color: 'white'
-                      }}
-                    >
+                <button 
+                  type="submit" 
+                  className="convert-btn" 
+                  disabled={!inputLink.trim()}
+                >
+                  Convert
+                </button>
+              </form>
+              
+              {detectedPlatform && autoDetect && (
+                <div className="platform-detected">
+                  <div className={`platform-badge ${detectedPlatform.name.toLowerCase().replace(/\s+/g, '')}`}>
+                    {showPlatformIcons ? (
                       <img 
                         src={detectedPlatform.logo} 
                         alt={`${detectedPlatform.name} logo`}
-                        className="platform-logo-small"
+                        style={{ width: '16px', height: '16px', objectFit: 'contain' }}
                       />
-                      <span className="platform-text">{detectedPlatform.name} detected</span>
-                    </div>
-                  </div>
-                )}
-              </form>
-
-              {isLoading && (
-                <div className="loading">
-                  <div className="enhanced-loader">
-                    <div className="music-waves">
-                      <div className="wave wave-1"></div>
-                      <div className="wave wave-2"></div>
-                      <div className="wave wave-3"></div>
-                      <div className="wave wave-4"></div>
-                      <div className="wave wave-5"></div>
-                    </div>
-                    <div className="searching-platforms">
-                      <div className="platform-dot spotify-dot">
-                        <img src={spotifyLogo} alt="Spotify" className="platform-dot-logo" />
-                      </div>
-                      <div className="platform-dot apple-dot">
-                        <img src={appleMusicLogo} alt="Apple Music" className="platform-dot-logo" />
-                      </div>
-                      <div className="platform-dot youtube-dot">
-                        <img src={youtubeMusicLogo} alt="YouTube Music" className="platform-dot-logo" />
-                      </div>
-                      <div className="platform-dot amazon-dot">
-                        <img src={amazonMusicLogo} alt="Amazon Music" className="platform-dot-logo" />
-                      </div>
-                      <div className="platform-dot tidal-dot">
-                        <img src={tidalLogo} alt="Tidal" className="platform-dot-logo" />
-                      </div>
-                      <div className="platform-dot deezer-dot">
-                        <img src={deezerLogo} alt="Deezer" className="platform-dot-logo" />
-                      </div>
-                    </div>
-                  </div>
-                  <p className="loading-text">Finding your song across platforms...</p>
-                  <div className="loading-progress">
-                    <div className="progress-bar"></div>
+                    ) : (
+                      <detectedPlatform.icon size={16} />
+                    )}
+                    <span>{detectedPlatform.name} detected</span>
                   </div>
                 </div>
               )}
-            </section>
+            </div>
+          )}
 
-            <section className={`result-section ${isConverted ? 'visible' : 'hidden'} ${isTransitioning ? 'transitioning' : ''}`}>
-              <div className="conversion-result">
-                <div className="track-info">
-                  <img 
-                    src={dummyConversion.albumArt} 
-                    alt="Album art" 
-                    className={`album-art ${isLoading ? 'loading' : ''}`}
-                  />
-                  <div className="track-details">
-                    <h3 className="track-title">{dummyConversion.songTitle}</h3>
-                    <p className="track-artist">{dummyConversion.artist}</p>
-                    <p className="track-album">from {dummyConversion.album}</p>
-                  </div>
-                </div>
-
-                <div className="platform-selection">
-                  <p className="instruction-text">
-                    Click any platform icon to copy its link to your clipboard:
-                  </p>
-                  
-                  <div className="platform-icons">
-                    {platforms.map((platform) => {
-                      const linkKey = platform.id as keyof typeof dummyConversion.platformLinks;
-                      const link = dummyConversion.platformLinks[linkKey];
-                      const isCopied = copiedPlatform === platform.id;
-                      
-                      return (
-                        <button
-                          key={platform.id}
-                          onClick={() => copyPlatformLink(platform.id, link)}
-                          className={`platform-icon ${platform.id} ${isCopied ? 'copied' : ''}`}
-                          title={`Copy ${platform.name} link`}
-                        >
-                          <div className="icon">
-                            <img 
-                              src={platform.logo} 
-                              alt={`${platform.name} logo`} 
-                              className="platform-logo"
-                            />
-                          </div>
-                          <span className="platform-name">{platform.name}</span>
-                          {isCopied && <span className="copied-indicator">Copied!</span>}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                <button onClick={handleReset} className="reset-btn">
-                  Convert Another Song
-                </button>
+          {/* Loading Section */}
+          {isLoading && (
+            <div className="loading-container active">
+              <div className="music-bars">
+                <div className="bar"></div>
+                <div className="bar"></div>
+                <div className="bar"></div>
+                <div className="bar"></div>
+                <div className="bar"></div>
               </div>
-            </section>
-          </div>
+              <p className="loading-text">Finding your music across platforms...</p>
+            </div>
+          )}
+
+          {/* Result Section */}
+          {isConverted && !isLoading && (
+            <div className="result-section active">
+              <div className="track-preview">
+                <div className="album-art">
+                  {dummyConversion.albumArt.includes('placeholder') ? (
+                    <Music3 size={36} />
+                  ) : (
+                    <img 
+                      src={dummyConversion.albumArt} 
+                      alt="Album art"
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '12px' }}
+                    />
+                  )}
+                </div>
+                <div className="track-info">
+                  {dummyConversion.type === 'song' && (
+                    <div className="track-title">{dummyConversion.songTitle}</div>
+                  )}
+                  <div className="track-artist">{dummyConversion.artist}</div>
+                  <div className="track-album">{dummyConversion.album}</div>
+                </div>
+              </div>
+
+              <p className="section-description">
+                Click any platform to copy its link to your clipboard
+              </p>
+
+              <div className="platforms-grid">
+                {platforms.map((platform) => {
+                  const linkKey = platform.id as keyof typeof dummyConversion.platformLinks;
+                  const link = dummyConversion.platformLinks[linkKey];
+                  const isCopied = copiedPlatform === platform.id;
+                  
+                  return (
+                    <button
+                      key={platform.id}
+                      onClick={() => copyPlatformLink(platform.id, link)}
+                      className={`platform-btn ${platform.id} ${isCopied ? 'copied' : ''}`}
+                      title={`Copy ${platform.name} link`}
+                    >
+                      <div className="platform-icon">
+                        {showPlatformIcons ? (
+                          <img 
+                            src={platform.logo} 
+                            alt={`${platform.name} logo`} 
+                            className="platform-logo"
+                          />
+                        ) : (
+                          <div className="platform-icon-fallback">
+                            {platform.id === 'spotify' && <Music size={40} />}
+                            {platform.id === 'apple' && <Apple size={40} />}
+                            {platform.id === 'youtube' && <Play size={40} />}
+                            {platform.id === 'amazonMusic' && <Package size={40} />}
+                            {platform.id === 'tidal' && <Waves size={40} />}
+                            {platform.id === 'deezer' && <Music2 size={40} />}
+                          </div>
+                        )}
+                      </div>
+                      <span className="platform-name">{platform.name}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <button onClick={handleReset} className="reset-btn">
+                Convert Another Song
+              </button>
+            </div>
+          )}
         </div>
       </main>
 
+      {/* Footer */}
       <footer className="footer">
-        <div className="container">
-          <p>&copy; 2024 MusicFlip. Share music, not frustration.</p>
-        </div>
+        <p>© 2025 MusicFlip. Share music, not frustration.</p>
       </footer>
     </div>
   )

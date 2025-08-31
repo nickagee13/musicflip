@@ -1,0 +1,337 @@
+# MusicFlip Style Guide
+
+## Overview
+MusicFlip is a modern web application that converts music links across streaming platforms. This style guide defines the visual identity, typography, colors, and interface patterns used throughout the application.
+
+## Design Principles
+- **Clean & Modern**: Emphasis on simplicity and clarity
+- **Platform-Agnostic**: Works equally well across all streaming services
+- **Accessible**: High contrast, proper focus states, and screen reader support
+- **Responsive**: Optimized for all device sizes
+- **Fast & Smooth**: Fluid animations and optimized performance
+
+## Typography
+
+### Primary Font Family
+**SF Pro Text** - Apple's system font for optimal readability and modern appearance
+- Fallback: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif
+
+### Font Weights Available
+- Light (300) - For subtle secondary text
+- Regular (400) - Default body text
+- Medium (500) - For emphasis and buttons
+- Semibold (600) - For important labels and settings
+- Bold (700) - For headings and primary CTAs
+- Heavy (800) - For strong emphasis
+- Black (900) - For maximum impact headlines
+
+### Typography Scale
+- **Logo**: 2rem (32px) - Bold weight
+- **Main Heading**: 1.75rem (28px) - Bold weight
+- **Section Titles**: 1.125rem (18px) - Semibold weight
+- **Body Text**: 1rem (16px) - Regular weight
+- **Secondary Text**: 0.95rem (15.2px) - Regular weight
+- **Small Text**: 0.875rem (14px) - Medium weight
+- **Micro Text**: 0.75rem (12px) - Medium weight
+
+### Line Heights
+- Headlines: 1.2
+- Body Text: 1.5
+- Small Text: 1.6
+
+### Letter Spacing
+- Logo: -0.3px for tighter letter spacing
+- All other text: Default (0)
+
+## Color Palette
+
+### Brand Foundation
+- **Primary Conversion**: #1DB584 (Main brand color - vibrant teal)
+- **Trust White**: #FFFFFF (Pure white for contrast)
+- **Deep Audio**: #0F1419 (Deep dark for premium feel)
+- **Conversion Gray**: #F8F9FA (Light background)
+
+### Platform Ecosystem Colors
+- **Spotify Green**: #1DB954
+- **Apple Red**: #FA243C  
+- **YouTube Red**: #FF0000
+- **Amazon Orange**: #FF9900
+- **Tidal Cyan**: #00D4AA
+- **Deezer Orange**: #FEAA2D
+
+### Functional Communication
+- **Success Moment**: #00E676 (Bright green for positive actions)
+- **Progress Amber**: #FF8F00 (Orange for progress indicators)
+- **Failure State**: #FF5722 (Red for errors)
+- **Information Blue**: #2196F3 (Blue for informational messages)
+- **Attention Orange**: #FF6B35 (Orange for warnings)
+
+### Text & Content Hierarchy
+- **Content Primary**: #1A1A1D (Main text color)
+- **Content Secondary**: #4A5568 (Secondary text)
+- **Content Tertiary**: #9E9E9E (Muted text)
+- **Interactive Accent**: #1DB584 (Links and interactive elements)
+
+### Dark Mode Colors
+- **Pure Black**: #000000 (True black background)
+- **Audio Surface**: #1A1A1D (Card backgrounds)
+- **Elevated Surface**: #2D2D30 (Raised elements)
+- **Dark Conversion**: #26D0CE (Primary color for dark mode)
+
+## Theme System
+
+### Light Mode (Default)
+- Background: Linear gradient from #667eea to #764ba2
+- Cards: Pure white (#FFFFFF)
+- Text: Dark colors (#1A1A1D primary)
+- Shadows: Subtle black shadows with low opacity
+
+### Dark Mode
+- Background: Linear gradient from #1a1a2e through #16213e to #0f3460
+- Cards: Dark gray (#1e1e1e)
+- Text: White and light grays
+- Shadows: Deep black shadows with higher opacity
+
+## Spacing System
+
+### Base Unit: 0.25rem (4px)
+- **xs**: 0.25rem (4px)
+- **sm**: 0.5rem (8px)
+- **md**: 1rem (16px)
+- **lg**: 1.5rem (24px)
+- **xl**: 2rem (32px)
+- **xxl**: 2.5rem (40px)
+- **xxxl**: 3rem (48px)
+
+### Component Spacing
+- Card padding: 2.5rem (40px) desktop, 1.5rem (24px) mobile
+- Button padding: 1.25rem x 2rem for primary buttons
+- Input padding: 1.25rem x 1.5rem
+- Section margins: 2rem between major sections
+
+## Border Radius
+
+### Consistent Rounded Corners
+- **Small elements**: 8px (buttons, inputs)
+- **Medium elements**: 12px (badges, small cards)
+- **Large elements**: 16px (primary buttons, inputs)
+- **Cards**: 24px (main content cards)
+- **Circular**: 50% (profile pictures, toggle switches)
+
+## Iconography
+
+### Icon System: Lucide React Icons
+- **Consistent Style**: Modern, minimal, outlined icons
+- **Standard Sizes**:
+  - Small: 16px (secondary actions, inline icons)
+  - Medium: 20px (primary actions, navigation)
+  - Large: 24px (headers, main actions)
+  - XL: 40px (platform fallback icons)
+
+### Icon Usage
+- **Settings**: Settings icon (gear)
+- **Theme Toggle**: Moon (dark) / Sun (light)
+- **Clear Actions**: X icon
+- **Music/Audio**: Music, Music2, Music3 variations
+- **Platforms**: Apple, Youtube, Package, Waves icons as fallbacks
+- **Navigation**: Consistent with Lucide design language
+
+### Platform Logos
+- **Authentic Branding**: Use official streaming service logos at 75px size
+- **Fallback Icons**: Lucide icons when logos are disabled
+- **Consistent Sizing**: All platform elements maintain same dimensions
+
+## Component Specifications
+
+### Buttons
+
+#### Primary Button
+- Background: Linear gradient (#1DB584 to #1DB954)
+- Color: White text
+- Padding: 1.25rem x 2rem
+- Border radius: 16px
+- Font: Medium weight, 1.1rem
+- Hover: Lift effect (translateY(-2px)) + shadow
+
+#### Secondary Button
+- Background: Transparent
+- Border: 2px solid border color
+- Color: Secondary text
+- Same padding and radius as primary
+- Hover: Background fill + color change
+
+#### Settings Button
+- Background: Glassmorphism (rgba blur)
+- Backdrop filter: blur(10px)
+- Border: 1px solid rgba(255,255,255,0.2)
+- Icon: 20px Lucide Settings icon
+
+### Input Fields
+- Padding: 1.25rem x 1.5rem
+- Border: 2px solid (responsive to focus)
+- Border radius: 16px
+- Font: Regular weight, 1rem
+- Focus: Primary color border + shadow + lift effect
+- Clear button: Absolute positioned, 32px circle
+
+### Cards
+- Background: Theme-appropriate surface color
+- Padding: 2.5rem (desktop), 1.5rem (mobile)
+- Border radius: 24px
+- Shadow: Contextual depth shadows
+- Top border: 4px animated color wave
+- Overflow: Hidden for contained effects
+
+### Platform Buttons
+- Layout: CSS Grid (3 columns desktop, 2 mobile)
+- Aspect: Square-ish with flexible content
+- Padding: 1.5rem x 1rem
+- Border: 2px solid border color
+- Hover: Lift + shadow + slight scale
+- Copy feedback: Success animation + temporary badge
+
+## Animation & Transitions
+
+### Standard Transitions
+- **Duration**: 0.3s for most interactions
+- **Easing**: cubic-bezier(0.4, 0, 0.2, 1) for smooth feel
+- **Properties**: All transitioning properties for consistency
+
+### Specific Animations
+
+#### Color Wave (Card Top Border)
+- Animation: translateX movement
+- Duration: 3s infinite
+- Colors: Platform-specific or multi-platform gradient
+- Easing: ease-in-out
+
+#### Music Bars (Loading)
+- 5 bars with staggered animation
+- Height oscillation: 10px to 30px
+- Duration: 0.8s per cycle
+- Delay: 0.1s increments between bars
+
+#### Platform Button Hover
+- Transform: translateY(-4px) + rotate(5deg) for icons
+- Scale: 1.1 for logos
+- Shadow: Elevated shadow
+- Smooth return on hover exit
+
+#### Settings Dropdown
+- Transform: translateY(-10px) to translateY(0)
+- Opacity: 0 to 1
+- Transition: 0.3s cubic-bezier timing
+- Backdrop: Blur effect
+
+#### Copy Success Feedback
+- Scale pulse: 1 → 1.05 → 1
+- Temporary badge: Fade in/out over 2s
+- Color flash: Brief success color highlight
+
+## Layout & Grid
+
+### Responsive Breakpoints
+- **Mobile**: 480px and below
+- **Tablet**: 481px - 768px
+- **Desktop**: 769px and above
+
+### Container Constraints
+- **Max Width**: 600px (centered)
+- **Padding**: 1.5rem horizontal
+- **Vertical Spacing**: 3rem between major sections
+
+### Platform Grid
+- **Desktop**: 3 columns, 1rem gap
+- **Mobile**: 2 columns, 1rem gap
+- **Aspect**: Flexible height, consistent spacing
+
+## Accessibility
+
+### Focus Management
+- **Outline**: 3px solid primary color
+- **Offset**: 2px for clear separation
+- **High Contrast**: Compatible with system preferences
+- **Tab Order**: Logical navigation flow
+
+### Color Contrast
+- **Text on Background**: WCAG AA compliant ratios
+- **Interactive Elements**: Clear focus indicators
+- **Dark/Light Themes**: Optimized contrast for each mode
+
+### Screen Reader Support
+- **Alt Text**: Descriptive for all images
+- **ARIA Labels**: Proper labeling for interactive elements
+- **Semantic HTML**: Proper heading hierarchy and landmarks
+
+## Implementation Guidelines
+
+### CSS Architecture
+- **Custom Properties**: CSS variables for all design tokens
+- **Theme Support**: Data attributes for theme switching
+- **Component Isolation**: Scoped styles for maintainability
+- **Performance**: Optimized selectors and minimal reflows
+
+### Font Loading
+- **@font-face**: SF Pro Text with proper fallbacks
+- **Loading Strategy**: Progressive enhancement
+- **File Optimization**: Multiple weights available on-demand
+
+### Color Implementation
+- **CSS Variables**: All colors defined in :root
+- **Theme Override**: Attribute-based theme switching
+- **Platform Dynamic**: JavaScript-generated platform colors
+- **Fallback**: Graceful degradation for unsupported features
+
+### Icon Integration
+- **Lucide React**: Consistent icon system
+- **Size Props**: Standardized sizing via props
+- **Color Inheritance**: Icons inherit text color
+- **Performance**: Tree-shaking for unused icons
+
+## File Organization
+
+### CSS Structure
+- **index.css**: Global styles, CSS custom properties, @font-face
+- **App.css**: Component-specific styles, layout systems
+- **Assets**: Fonts in /assets/fonts/, logos in /assets/streaming-services-logos/
+
+### Component Architecture
+- **React**: Functional components with hooks
+- **TypeScript**: Full type safety for props and state
+- **State Management**: React useState for local state
+- **Effects**: useEffect for side effects and cleanup
+
+## Brand Voice & Messaging
+
+### Tone
+- **Friendly**: Approachable and helpful
+- **Efficient**: Quick and to-the-point
+- **Universal**: Platform-agnostic language
+- **Modern**: Contemporary and fresh
+
+### Copy Guidelines
+- **Tagline**: "Share music across all platforms"
+- **CTAs**: Action-oriented ("Convert", "Copy", "Share")
+- **Descriptions**: Clear and concise explanations
+- **Error Messages**: Helpful and constructive
+
+## Performance Standards
+
+### Loading
+- **First Paint**: < 1s on fast connections
+- **Interactivity**: < 2s time to interactive
+- **Font Loading**: Progressive with system fallbacks
+- **Image Optimization**: Proper sizing and compression
+
+### Animation Performance
+- **60fps**: All animations maintain smooth framerate
+- **GPU Acceleration**: Transform and opacity animations
+- **Reduced Motion**: Respect user accessibility preferences
+- **Memory Management**: Proper cleanup of event listeners
+
+---
+
+This style guide serves as the single source of truth for MusicFlip's visual design and implementation standards. All development should reference and adhere to these specifications to maintain consistency and quality across the application.
+
+Last Updated: January 2025
+Version: 2.0

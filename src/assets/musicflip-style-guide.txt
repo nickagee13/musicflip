@@ -1,0 +1,164 @@
+# MusicFlip Style Guide
+*Cross-Platform Music Sharing App - Senior Product Design Standards*
+
+## Color System & Hierarchy
+
+**Brand Foundation**
+* Primary Conversion - #1DB584 (Main action color, "convert" buttons, success states)
+* Trust White - #FFFFFF (Clean surfaces, card backgrounds, reliability cue)
+* Deep Audio - #0F1419 (Dark mode primary, premium music app feel)
+* Conversion Gray - #F8F9FA (Light mode background, subtle separation)
+
+**Platform Ecosystem Integration**
+* Spotify Green - #1DB954 (Spotify-specific elements, maintain brand recognition)
+* Apple Red - #FA243C (Apple Music elements)
+* YouTube Red - #FF0000 (YouTube Music elements)
+* Tidal Cyan - #00FFFF (Tidal elements)
+* Universal Neutral - #667080 (Generic platform state, unavailable services)
+
+**Functional Communication Hierarchy**
+* Success Moment - #00E676 (Link copied confirmations, successful conversions)
+* Progress Amber - #FF8F00 (Loading states, processing feedback)
+* Failure State - #FF5722 (Conversion errors, unavailable content)
+* Information Blue - #2196F3 (Help content, platform availability info)
+* Attention Orange - #FF6B35 (Premium upgrade prompts, feature discovery)
+
+**Text & Content Hierarchy**
+* Content Primary - #1A1A1D (Song titles, artist names, critical information)
+* Content Secondary - #4A5568 (Album names, metadata, supporting information)
+* Content Tertiary - #9E9E9E (Timestamps, helper text, placeholder content)
+* Interactive Accent - #1DB584 (Links, buttons, tap targets)
+
+**Dark Mode Audio Environment**
+* Pure Black - #000000 (OLED optimization, battery-friendly)
+* Audio Surface - #1A1A1D (Card backgrounds, maintains album art contrast)
+* Elevated Surface - #2D2D30 (Modal backgrounds, input fields)
+* Dark Conversion - #26D0CE (Adjusted primary for dark contrast)
+
+## Typography for Music Metadata
+
+**Music Content Hierarchy**
+* Track Title Display: 20px/28px, Semibold, -0.1px letter spacing
+  * Primary song names in preview cards and share screens
+* Artist Name Primary: 16px/22px, Medium, 0px letter spacing, Content Secondary color
+  * Main artist credits, featured artists
+* Album Context: 14px/20px, Regular, 0px letter spacing, Content Tertiary color
+  * Album titles, release years, additional context
+* Platform Attribution: 11px/16px, Bold, 0.4px letter spacing, All caps
+  * "SPOTIFY" • "APPLE MUSIC" labels under platform icons
+
+**Interface & Navigation Text**
+* Screen Headers: 32px/40px, Bold, -0.3px letter spacing
+  * "Convert Music Link", "Share with Contacts" main headers
+* Section Dividers: 18px/24px, Semibold, -0.1px letter spacing
+  * "Choose Platform", "Recent Conversions", "Saved Contacts"
+* Primary Actions: 16px/24px, Semibold, 0.1px letter spacing
+  * Button text, main interactive elements
+* Supporting Information: 14px/20px, Regular, 0px letter spacing
+  * Help text, descriptions, secondary information
+* Micro Labels: 12px/18px, Medium, 0.3px letter spacing
+  * Status indicators, conversion timestamps, metadata
+
+## Component Architecture
+
+**Music Preview Card System**
+* **Dimensions**: 328dp width × 120dp height (optimized for album art + metadata)
+* **Layout**: 88dp album art + 20dp padding + flexible content area
+* **Background**: Trust White (#FFFFFF) with 2dp shadow, 16dp corner radius
+* **Content Hierarchy**: Track title (20px) → Artist (16px) → Album (14px)
+* **Interactive States**: Rest → Hover (2dp shadow increase) → Active (1dp inset) → Loading (skeleton animation)
+
+**Platform Selection Interface**
+* **Grid Layout**: 2×4 platform grid with 12dp spacing
+* **Button Dimensions**: 72dp × 72dp for optimal thumb targeting
+* **Visual Structure**: 32dp platform icon + 12dp spacing + platform name (11px caps)
+* **Selection States**: Unselected (10% platform color background) → Selected (100% platform color + white text + 2dp border)
+* **Availability Indicators**: Available (full opacity) → Unavailable (30% opacity + crossed-out icon)
+
+**Contact Quick-Share Cards**
+* **Card Structure**: 56dp height, full-width, left-aligned content
+* **Layout**: 32dp contact avatar + 16dp spacing + name/platform info + right-aligned share button
+* **Platform Indicators**: 20dp circular badge with platform brand color
+* **Interaction**: Single tap triggers instant conversion + share, long press opens edit mode
+
+**Link Input & Conversion Flow**
+* **Input Field**: 64dp height, 16dp corner radius, 20dp horizontal padding
+* **Paste Detection**: Auto-focus with 1.03x scale animation + subtle glow
+* **Loading State**: Progress bar integrated into input field bottom border
+* **Success State**: Input transforms into preview card with slide-up animation
+
+## Layout Principles for Music Sharing
+
+**Information Density Management**
+* **Primary Content Zone**: Album art and track info consume 40% of screen real estate
+* **Action Zone**: Platform selection and sharing buttons get 35% of space
+* **Navigation & Secondary**: 25% reserved for back navigation, settings, additional options
+* **Thumb Accessibility**: All primary actions within 75% of screen height from bottom
+
+**Progressive Disclosure Strategy**
+* **Level 1**: Link input + instant preview (covers 80% of use cases)
+* **Level 2**: Platform selection grid (revealed after successful link recognition)
+* **Level 3**: Contact shortcuts (accessible via bottom sheet or secondary navigation)
+* **Level 4**: Advanced features (batch sharing, analytics) in dedicated sections
+
+**Cross-Platform Layout Adaptation**
+* **Mobile Portrait**: Single-column layout, large touch targets, bottom-heavy actions
+* **Mobile Landscape**: Two-column layout with preview left, actions right
+* **Tablet**: Three-column layout with contacts sidebar, main conversion center, history right
+* **Desktop Web**: Centered 480dp container with expanded feature visibility
+
+## Motion Design for Audio Context
+
+**Music-Inspired Animation Language**
+* **Beat-Sync Timing**: 500ms base duration matching 120 BPM rhythm
+* **Waveform Loading**: Conversion progress shown as animated audio waveform
+* **Vinyl Metaphors**: Album art rotation during processing, scratch-record error animations
+* **Audio Crossfade**: Screen transitions use audio crossfade timing (300-400ms overlap)
+
+**Conversion Flow Micro-Interactions**
+* **Link Recognition**: 200ms scale-up + color change indicating successful detection
+* **Platform Selection**: Ripple effect from tap point with platform brand color
+* **Copy Success**: Checkmark animation + brief background color pulse + haptic feedback
+* **Share Success**: Spring animation launching from share button toward message apps
+
+**State Change Choreography**
+* **Empty → Loading**: Skeleton elements fade in with staggered timing (50ms intervals)
+* **Loading → Success**: Content slides up with album art leading, text following
+* **Platform Switching**: Smooth color transitions matching new platform brand
+* **Error Recovery**: Gentle shake animation + color reset to encourage retry
+
+## Accessibility for Music Discovery
+
+**Visual Accessibility**
+* **Contrast Ratios**: 4.5:1 minimum for song titles, 7:1 for primary actions
+* **Color Independence**: Platform selection works without color (icons + text labels)
+* **Focus Indicators**: 3dp outline with 2dp offset, platform brand color on focus
+* **Text Scaling**: Interface adapts to 200% text size without horizontal scrolling
+
+**Motor Accessibility**
+* **Touch Targets**: 44dp minimum, 56dp preferred for primary actions
+* **One-Handed Operation**: Primary flow completable with thumb-only navigation
+* **Gesture Alternatives**: All swipe actions have button alternatives
+* **Voice Control**: Compatible with "Tap [Platform Name]" voice commands
+
+**Cognitive Accessibility**
+* **Clear States**: Loading, success, error states use multiple feedback channels (visual + haptic + audio)
+* **Consistent Patterns**: Platform selection, contact management, sharing all use identical interaction models
+* **Error Prevention**: Smart defaults, confirmation dialogs for destructive actions
+* **Context Preservation**: User maintains awareness of conversion source throughout flow
+
+## Performance Optimization for Music Metadata
+
+**Critical Rendering Path**
+* **Initial Load**: App shell renders in <800ms
+* **Link Processing**: Preview appears within 1.5 seconds of paste
+* **Platform Conversion**: Equivalent links generated in <1 second
+* **Offline Capability**: Recent conversions cached for offline access
+
+**Progressive Enhancement**
+* **Core Functionality**: Link conversion works without JavaScript enhancement
+* **Enhanced Features**: Album art, contact integration, analytics layer progressively
+* **Graceful Degradation**: Missing album art doesn't break conversion flow
+* **Network Resilience**: Failed conversions provide manual platform search options
+
+This updated style guide transforms the fintech-inspired aesthetic into a music-specific design language that prioritizes both emotional resonance and functional clarity, ensuring MusicFlip feels both trustworthy and joyful to use.
