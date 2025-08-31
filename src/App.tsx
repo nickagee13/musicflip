@@ -180,7 +180,11 @@ function App() {
             <section className={`result-section ${isConverted ? 'visible' : 'hidden'} ${isTransitioning ? 'transitioning' : ''}`}>
               <div className="conversion-result">
                 <div className="track-info">
-                  <img src={dummyConversion.albumArt} alt="Album art" className="album-art" />
+                  <img 
+                    src={dummyConversion.albumArt} 
+                    alt="Album art" 
+                    className={`album-art ${isLoading ? 'loading' : ''}`}
+                  />
                   <div className="track-details">
                     <h3 className="track-title">{dummyConversion.songTitle}</h3>
                     <p className="track-artist">{dummyConversion.artist}</p>

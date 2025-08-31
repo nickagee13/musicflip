@@ -5,10 +5,42 @@
 
   color-scheme: light dark;
   
-  /* Light mode colors */
-  --bg-color: #f8fafc;
-  --text-color: #2d3748;
-  --text-secondary: #718096;
+  /* Brand Foundation */
+  --primary-conversion: #1DB584;
+  --trust-white: #FFFFFF;
+  --deep-audio: #0F1419;
+  --conversion-gray: #F8F9FA;
+  
+  /* Platform Ecosystem */
+  --spotify-green: #1DB954;
+  --apple-red: #FA243C;
+  --youtube-red: #FF0000;
+  --tidal-cyan: #00FFFF;
+  --universal-neutral: #667080;
+  
+  /* Functional Communication */
+  --success-moment: #00E676;
+  --progress-amber: #FF8F00;
+  --failure-state: #FF5722;
+  --information-blue: #2196F3;
+  --attention-orange: #FF6B35;
+  
+  /* Text & Content Hierarchy */
+  --content-primary: #1A1A1D;
+  --content-secondary: #4A5568;
+  --content-tertiary: #9E9E9E;
+  --interactive-accent: #1DB584;
+  
+  /* Dark Mode Audio Environment */
+  --pure-black: #000000;
+  --audio-surface: #1A1A1D;
+  --elevated-surface: #2D2D30;
+  --dark-conversion: #26D0CE;
+  
+  /* Legacy support - map to new colors */
+  --bg-color: var(--conversion-gray);
+  --text-color: var(--content-primary);
+  --text-secondary: var(--content-secondary);
   
   color: var(--text-color);
   background-color: var(--bg-color);
@@ -45,13 +77,18 @@ p {
 }
 
 a {
-  color: #667eea;
+  color: var(--interactive-accent);
   text-decoration: none;
-  transition: color 0.2s;
+  transition: color 0.3s;
 }
 
 a:hover {
-  color: #5a6fd8;
+  color: var(--primary-conversion);
+}
+
+a:focus {
+  outline: 3px solid var(--primary-conversion);
+  outline-offset: 2px;
 }
 
 button {
@@ -63,10 +100,13 @@ button {
   font-weight: 500;
 }
 
+/* Accessibility: Focus Indicators - 3dp outline with 2dp offset */
 button:focus,
 button:focus-visible {
-  outline: 2px solid #667eea;
+  outline: 3px solid var(--primary-conversion);
   outline-offset: 2px;
+  /* Ensure focus is visible in high contrast mode */
+  border-color: var(--primary-conversion) !important;
 }
 
 input {
@@ -78,11 +118,13 @@ input:focus {
   outline: none;
 }
 
-/* Dark mode */
+/* Dark Mode Audio Environment */
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg-color: #1a202c;
-    --text-color: #e2e8f0;
-    --text-secondary: #a0aec0;
+    --bg-color: var(--pure-black);
+    --text-color: var(--trust-white);
+    --text-secondary: var(--content-secondary);
+    --primary-conversion: var(--dark-conversion);
+    --conversion-gray: var(--audio-surface);
   }
 }
