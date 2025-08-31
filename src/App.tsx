@@ -1,6 +1,14 @@
 import { useState } from 'react'
 import './App.css'
 
+// Import streaming service logos
+import spotifyLogo from './assets/streaming-services-logos/spotify-logo.png'
+import appleMusicLogo from './assets/streaming-services-logos/apple-music-logo.png'
+import youtubeMusicLogo from './assets/streaming-services-logos/youtube-music-logo.png'
+import amazonMusicLogo from './assets/streaming-services-logos/amazon-music-logo.png'
+import tidalLogo from './assets/streaming-services-logos/tidal-logo.png'
+import deezerLogo from './assets/streaming-services-logos/deezer-logo.png'
+
 // Dummy data for demonstration
 const dummyConversion = {
   originalPlatform: 'Spotify',
@@ -13,13 +21,25 @@ const dummyConversion = {
     apple: 'https://music.apple.com/us/album/anti-hero/1640825011?i=1640825042',
     youtube: 'https://music.youtube.com/watch?v=b1kbLWvqugk',
     amazonMusic: 'https://music.amazon.com/albums/B0BDHBDL8V?marketplaceId=ATVPDKIKX0DER&musicTerritory=US&ref=dm_sh_zNIz3B4oHcaoz6hM2oOvwjlLt',
-    tidal: 'https://listen.tidal.com/album/248197965/track/248197966'
+    tidal: 'https://listen.tidal.com/album/248197965/track/248197966',
+    deezer: 'https://www.deezer.com/track/1509250742'
   }
 }
+
+// Platform configuration with logos
+const platforms = [
+  { id: 'spotify', name: 'Spotify', logo: spotifyLogo, color: '#1DB954' },
+  { id: 'apple', name: 'Apple Music', logo: appleMusicLogo, color: '#FA243C' },
+  { id: 'youtube', name: 'YouTube Music', logo: youtubeMusicLogo, color: '#FF0000' },
+  { id: 'amazonMusic', name: 'Amazon Music', logo: amazonMusicLogo, color: '#FF6B35' },
+  { id: 'tidal', name: 'Tidal', logo: tidalLogo, color: '#00FFFF' },
+  { id: 'deezer', name: 'Deezer', logo: deezerLogo, color: '#FEAA2D' }
+]
 
 type DetectedPlatform = {
   name: string;
   icon: string;
+  logo: string;
   color: string;
   bgColor: string;
 } | null;
@@ -65,15 +85,17 @@ function App() {
     if (!url) return null;
     
     if (url.includes('spotify.com')) {
-      return { name: 'Spotify', icon: '🎵', color: '#1DB954', bgColor: '#f0fff4' };
+      return { name: 'Spotify', icon: '🎵', logo: spotifyLogo, color: '#1DB954', bgColor: '#f0fff4' };
     } else if (url.includes('music.apple.com') || url.includes('itunes.apple.com')) {
-      return { name: 'Apple Music', icon: '🍎', color: '#FC3C44', bgColor: '#fff5f5' };
+      return { name: 'Apple Music', icon: '🍎', logo: appleMusicLogo, color: '#FC3C44', bgColor: '#fff5f5' };
     } else if (url.includes('music.youtube.com') || url.includes('youtube.com')) {
-      return { name: 'YouTube Music', icon: '📺', color: '#FF0000', bgColor: '#fff5f5' };
+      return { name: 'YouTube Music', icon: '📺', logo: youtubeMusicLogo, color: '#FF0000', bgColor: '#fff5f5' };
     } else if (url.includes('music.amazon.com') || url.includes('amazon.com')) {
-      return { name: 'Amazon Music', icon: '📦', color: '#FF9900', bgColor: '#fffbf0' };
+      return { name: 'Amazon Music', icon: '📦', logo: amazonMusicLogo, color: '#FF9900', bgColor: '#fffbf0' };
     } else if (url.includes('tidal.com') || url.includes('listen.tidal.com')) {
-      return { name: 'Tidal', icon: '🌊', color: '#00D4AA', bgColor: '#f0fffe' };
+      return { name: 'Tidal', icon: '🌊', logo: tidalLogo, color: '#00D4AA', bgColor: '#f0fffe' };
+    } else if (url.includes('deezer.com')) {
+      return { name: 'Deezer', icon: '🎶', logo: deezerLogo, color: '#FEAA2D', bgColor: '#fffcf5' };
     }
     return null;
   };
@@ -144,7 +166,11 @@ function App() {
                         color: 'white'
                       }}
                     >
-                      <span className="platform-icon">{detectedPlatform.icon}</span>
+                      <img 
+                        src={detectedPlatform.logo} 
+                        alt={`${detectedPlatform.name} logo`}
+                        className="platform-logo-small"
+                      />
                       <span className="platform-text">{detectedPlatform.name} detected</span>
                     </div>
                   </div>
@@ -162,11 +188,24 @@ function App() {
                       <div className="wave wave-5"></div>
                     </div>
                     <div className="searching-platforms">
-                      <div className="platform-dot spotify-dot">🎵</div>
-                      <div className="platform-dot apple-dot">🍎</div>
-                      <div className="platform-dot youtube-dot">📺</div>
-                      <div className="platform-dot amazon-dot">📦</div>
-                      <div className="platform-dot tidal-dot">🌊</div>
+                      <div className="platform-dot spotify-dot">
+                        <img src={spotifyLogo} alt="Spotify" className="platform-dot-logo" />
+                      </div>
+                      <div className="platform-dot apple-dot">
+                        <img src={appleMusicLogo} alt="Apple Music" className="platform-dot-logo" />
+                      </div>
+                      <div className="platform-dot youtube-dot">
+                        <img src={youtubeMusicLogo} alt="YouTube Music" className="platform-dot-logo" />
+                      </div>
+                      <div className="platform-dot amazon-dot">
+                        <img src={amazonMusicLogo} alt="Amazon Music" className="platform-dot-logo" />
+                      </div>
+                      <div className="platform-dot tidal-dot">
+                        <img src={tidalLogo} alt="Tidal" className="platform-dot-logo" />
+                      </div>
+                      <div className="platform-dot deezer-dot">
+                        <img src={deezerLogo} alt="Deezer" className="platform-dot-logo" />
+                      </div>
                     </div>
                   </div>
                   <p className="loading-text">Finding your song across platforms...</p>
@@ -198,55 +237,30 @@ function App() {
                   </p>
                   
                   <div className="platform-icons">
-                    <button 
-                      onClick={() => copyPlatformLink('spotify', dummyConversion.platformLinks.spotify)}
-                      className={`platform-icon spotify ${copiedPlatform === 'spotify' ? 'copied' : ''}`}
-                      title="Copy Spotify link"
-                    >
-                      <div className="icon">🎵</div>
-                      <span className="platform-name">Spotify</span>
-                      {copiedPlatform === 'spotify' && <span className="copied-indicator">Copied!</span>}
-                    </button>
-
-                    <button 
-                      onClick={() => copyPlatformLink('apple', dummyConversion.platformLinks.apple)}
-                      className={`platform-icon apple ${copiedPlatform === 'apple' ? 'copied' : ''}`}
-                      title="Copy Apple Music link"
-                    >
-                      <div className="icon">🍎</div>
-                      <span className="platform-name">Apple Music</span>
-                      {copiedPlatform === 'apple' && <span className="copied-indicator">Copied!</span>}
-                    </button>
-
-                    <button 
-                      onClick={() => copyPlatformLink('youtube', dummyConversion.platformLinks.youtube)}
-                      className={`platform-icon youtube ${copiedPlatform === 'youtube' ? 'copied' : ''}`}
-                      title="Copy YouTube Music link"
-                    >
-                      <div className="icon">📺</div>
-                      <span className="platform-name">YouTube</span>
-                      {copiedPlatform === 'youtube' && <span className="copied-indicator">Copied!</span>}
-                    </button>
-
-                    <button 
-                      onClick={() => copyPlatformLink('amazonMusic', dummyConversion.platformLinks.amazonMusic)}
-                      className={`platform-icon amazon ${copiedPlatform === 'amazonMusic' ? 'copied' : ''}`}
-                      title="Copy Amazon Music link"
-                    >
-                      <div className="icon">📦</div>
-                      <span className="platform-name">Amazon</span>
-                      {copiedPlatform === 'amazonMusic' && <span className="copied-indicator">Copied!</span>}
-                    </button>
-
-                    <button 
-                      onClick={() => copyPlatformLink('tidal', dummyConversion.platformLinks.tidal)}
-                      className={`platform-icon tidal ${copiedPlatform === 'tidal' ? 'copied' : ''}`}
-                      title="Copy Tidal link"
-                    >
-                      <div className="icon">🌊</div>
-                      <span className="platform-name">Tidal</span>
-                      {copiedPlatform === 'tidal' && <span className="copied-indicator">Copied!</span>}
-                    </button>
+                    {platforms.map((platform) => {
+                      const linkKey = platform.id as keyof typeof dummyConversion.platformLinks;
+                      const link = dummyConversion.platformLinks[linkKey];
+                      const isCopied = copiedPlatform === platform.id;
+                      
+                      return (
+                        <button
+                          key={platform.id}
+                          onClick={() => copyPlatformLink(platform.id, link)}
+                          className={`platform-icon ${platform.id} ${isCopied ? 'copied' : ''}`}
+                          title={`Copy ${platform.name} link`}
+                        >
+                          <div className="icon">
+                            <img 
+                              src={platform.logo} 
+                              alt={`${platform.name} logo`} 
+                              className="platform-logo"
+                            />
+                          </div>
+                          <span className="platform-name">{platform.name}</span>
+                          {isCopied && <span className="copied-indicator">Copied!</span>}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
 

@@ -1273,3 +1273,70 @@
     max-width: 500px;
   }
 }
+
+/* Platform logo styling */
+.platform-badge .platform-logo-small {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  animation: iconBounce 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.2s both;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+.platform-logo {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Logo hover effects */
+.platform-icon:hover .platform-logo {
+  transform: scale(1.1);
+  filter: brightness(1.1);
+}
+
+.platform-icon.copied .platform-logo {
+  transform: scale(1.05);
+  filter: brightness(1.2);
+}
+
+/* Deezer Platform */
+.platform-icon.deezer {
+  background: color-mix(in srgb, #FEAA2D 10%, var(--trust-white) 90%);
+}
+
+.platform-icon.deezer:hover {
+  border-color: #FEAA2D;
+  background: color-mix(in srgb, #FEAA2D 20%, var(--trust-white) 80%);
+  box-shadow: 0 4px 16px rgba(254, 170, 45, 0.2);
+  transform: translateY(-2px) scale(1.05);
+}
+
+.platform-icon.deezer.selected {
+  background: #FEAA2D;
+  border-color: #FEAA2D;
+  color: var(--trust-white);
+  box-shadow: 0 2px 8px rgba(254, 170, 45, 0.3);
+}
+
+.platform-icon.deezer:focus {
+  outline-color: #FEAA2D !important;
+}
+
+.deezer-dot {
+  animation-delay: 1.2s;
+  border-color: #FEAA2D;
+}
+
+.platform-dot-logo {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  opacity: 0.9;
+}
