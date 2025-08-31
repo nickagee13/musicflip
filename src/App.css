@@ -738,6 +738,241 @@ body {
   font-size: 0.875rem;
 }
 
+/* Error Message */
+.error-message {
+  background: rgba(255, 87, 34, 0.1);
+  border: 1px solid var(--failure-state);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  animation: slideIn 0.3s ease;
+}
+
+.error-message p {
+  color: var(--failure-state);
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.error-message button {
+  background: none;
+  border: none;
+  color: var(--failure-state);
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.error-message button:hover {
+  background: rgba(255, 87, 34, 0.1);
+}
+
+/* Result Actions */
+.result-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.result-actions .section-description {
+  margin-bottom: 0;
+  text-align: center;
+}
+
+/* Share Button */
+.share-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, var(--primary-conversion), var(--spotify-green));
+  color: var(--trust-white);
+  border: none;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(29, 181, 132, 0.2);
+}
+
+.share-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(29, 181, 132, 0.3);
+}
+
+/* Cache Indicator */
+.cache-indicator {
+  font-size: 0.75rem;
+  color: var(--success-moment);
+  font-weight: 600;
+  margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  opacity: 0.8;
+}
+
+/* Platform Icon Fallback */
+.platform-icon-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: var(--content-secondary);
+  transition: all 0.3s ease;
+}
+
+.platform-btn:hover .platform-icon-fallback {
+  color: var(--content-primary);
+  transform: scale(1.1);
+}
+
+/* Enhanced Platform Grid for Dynamic Sizing */
+.platforms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 600px) {
+  .platforms-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Loading State Enhancement */
+.loading-text {
+  color: var(--content-secondary);
+  font-size: 0.95rem;
+  animation: pulse 1.5s ease-in-out infinite;
+  font-weight: 500;
+}
+
+/* Improved Platform Detection */
+.platform-detected {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(-10px);
+  animation: slideIn 0.4s ease forwards;
+}
+
+.platform-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: var(--card-bg);
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 2px solid;
+  transition: all 0.3s ease;
+}
+
+.platform-badge:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Enhanced Platform Colors */
+.platform-badge.spotify { 
+  border-color: var(--spotify-green);
+  color: var(--spotify-green);
+  background: rgba(29, 185, 84, 0.05);
+}
+
+.platform-badge.applemusic { 
+  border-color: var(--apple-red);
+  color: var(--apple-red);
+  background: rgba(250, 36, 60, 0.05);
+}
+
+.platform-badge.youtubemusic { 
+  border-color: var(--youtube-red);
+  color: var(--youtube-red);
+  background: rgba(255, 0, 0, 0.05);
+}
+
+.platform-badge.tidal { 
+  border-color: var(--tidal-cyan);
+  color: var(--tidal-cyan);
+  background: rgba(0, 212, 170, 0.05);
+}
+
+.platform-badge.amazonmusic {
+  border-color: var(--amazon-orange);
+  color: var(--amazon-orange);
+  background: rgba(255, 153, 0, 0.05);
+}
+
+.platform-badge.deezer {
+  border-color: var(--deezer-orange);
+  color: var(--deezer-orange);
+  background: rgba(254, 170, 45, 0.05);
+}
+
+/* Track Info Enhancements */
+.track-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--content-primary);
+  margin-bottom: 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+
+.track-artist {
+  font-size: 0.95rem;
+  color: var(--content-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+}
+
+/* Accessibility Improvements */
+@media (prefers-reduced-motion: reduce) {
+  .music-bars .bar,
+  .loading-text,
+  .platform-detected,
+  .error-message {
+    animation: none;
+  }
+  
+  .platform-btn:hover,
+  .share-btn:hover {
+    transform: none;
+  }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  .platform-badge,
+  .error-message {
+    border-width: 3px;
+  }
+  
+  .share-btn,
+  .convert-btn {
+    border: 2px solid var(--trust-white);
+  }
+}
+
 /* Responsive */
 @media (max-width: 480px) {
   .card {
@@ -746,6 +981,7 @@ body {
   
   .platforms-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
   }
   
   .section-title {
@@ -769,5 +1005,20 @@ body {
   
   .settings-dropdown {
     min-width: 180px;
+  }
+  
+  .error-message {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .result-actions {
+    margin-bottom: 1.5rem;
+  }
+  
+  .share-btn {
+    padding: 0.625rem 1.25rem;
+    font-size: 0.875rem;
   }
 }

@@ -1,10 +1,6 @@
 import { useState, useEffect } from 'react'
-import { Settings, X, Moon, Sun, Music, Apple, Play, Package, Waves, Music2, Music3, Share } from 'lucide-react'
+import { Settings, X, Moon, Sun, Music, Apple, Play, Package, Waves, Music2, Music3 } from 'lucide-react'
 import './App.css'
-
-// Import services
-import { convertMusicLink, isSupportedMusicUrl, detectPlatformFromUrl, getPlatformColor } from './lib/songlink-api'
-import { useShareTarget, useWebShare } from './hooks/useShareTarget'
 
 // Import streaming service logos
 import spotifyLogo from './assets/streaming-services-logos/spotify-logo.png'
@@ -13,6 +9,24 @@ import youtubeMusicLogo from './assets/streaming-services-logos/youtube-music-lo
 import amazonMusicLogo from './assets/streaming-services-logos/amazon-music-logo.png'
 import tidalLogo from './assets/streaming-services-logos/tidal-logo.png'
 import deezerLogo from './assets/streaming-services-logos/deezer-logo.png'
+
+// Dummy data for demonstration
+const dummyConversion = {
+  originalPlatform: 'Spotify',
+  type: 'song', // 'song' or 'album'
+  songTitle: 'Anti-Hero',
+  artist: 'Taylor Swift',
+  album: 'Midnights',
+  albumArt: 'https://via.placeholder.com/200x200/1DB954/ffffff?text=🎵',
+  platformLinks: {
+    spotify: 'https://open.spotify.com/track/4Dvkj6JhhA12EX05fT7y2e',
+    apple: 'https://music.apple.com/us/album/anti-hero/1640825011?i=1640825042',
+    youtube: 'https://music.youtube.com/watch?v=b1kbLWvqugk',
+    amazonMusic: 'https://music.amazon.com/albums/B0BDHBDL8V?marketplaceId=ATVPDKIKX0DER&musicTerritory=US&ref=dm_sh_zNIz3B4oHcaoz6hM2oOvwjlLt',
+    tidal: 'https://listen.tidal.com/album/248197965/track/248197966',
+    deezer: 'https://www.deezer.com/track/1509250742'
+  }
+}
 
 // Platform configuration with logos
 const platforms = [
@@ -32,23 +46,10 @@ type DetectedPlatform = {
   bgColor: string;
 } | null;
 
-interface ConversionResult {
-  track: {
-    title: string;
-    artist: string;
-    artwork_url?: string;
-  };
-  platformLinks: { [platform: string]: string };
-  originalPlatform: string;
-  fromCache: boolean;
-}
-
 function App() {
   const [inputLink, setInputLink] = useState('')
   const [isConverted, setIsConverted] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [conversionResult, setConversionResult] = useState<ConversionResult | null>(null)
-  const [error, setError] = useState<string | null>(null)
   const [copiedPlatform, setCopiedPlatform] = useState<string | null>(null)
   const [detectedPlatform, setDetectedPlatform] = useState<DetectedPlatform>(null)
   const [theme, setTheme] = useState<'dark' | 'light'>('dark')
@@ -58,34 +59,12 @@ function App() {
   const [openLinksInNewTab, setOpenLinksInNewTab] = useState(true)
   const [autoClearInput, setAutoClearInput] = useState(false)
   const [showPlatformIcons, setShowPlatformIcons] = useState(true)
-  
-  // Share target integration
-  const { sharedUrl, isFromShare, isSupported: isSharedUrlSupported, clearShareData } = useShareTarget()
-  const { isShareSupported, shareConversion } = useWebShare()
+  const [originalPlatform, setOriginalPlatform] = useState<DetectedPlatform>(null)
 
   // Initialize theme
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
   }, [theme])
-
-  // Handle shared URLs from Web Share Target API
-  useEffect(() => {
-    if (sharedUrl) {
-      if (isSharedUrlSupported) {
-        setInputLink(sharedUrl)
-        setDetectedPlatform(detectPlatform(sharedUrl))
-        if (isFromShare) {
-          // Show a notification that the link was received
-          if (showNotifications) {
-            console.log('Received shared music link:', sharedUrl)
-          }
-        }
-      } else {
-        setError('This link is not from a supported music platform')
-      }
-      clearShareData()
-    }
-  }, [sharedUrl, isSharedUrlSupported, isFromShare, showNotifications, clearShareData])
 
   // Close settings when clicking outside
   useEffect(() => {
@@ -98,136 +77,69 @@ function App() {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [settingsOpen])
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (!inputLink.trim()) return
     
     setIsLoading(true)
-    setError(null)
+    // Store the detected platform for the result section
+    setOriginalPlatform(detectedPlatform)
     
-    try {
-      // Validate the URL first
-      if (!isSupportedMusicUrl(inputLink.trim())) {
-        throw new Error('Please enter a valid music link from Spotify, Apple Music, YouTube Music, or other supported platforms')
-      }
-
-      // Get conversion result
-      const result = await convertMusicLink(inputLink.trim())
-      
-      if (!result.success || !result.data) {
-        throw new Error(result.error || 'Failed to convert music link')
-      }
-
-      // Transform API result to match our interface
-      const conversionData = {
-        track: {
-          title: result.data.title,
-          artist: result.data.artist,
-          artwork_url: result.data.albumArt,
-        },
-        platformLinks: result.data.platformLinks,
-        originalPlatform: result.data.originalPlatform,
-        fromCache: false,
-      }
-
-      setConversionResult(conversionData)
+    // Simulate API call
+    setTimeout(() => {
+      setIsLoading(false)
       setIsConverted(true)
-
       if (autoClearInput) {
         setInputLink('')
         setDetectedPlatform(null)
       }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An unexpected error occurred')
-    } finally {
-      setIsLoading(false)
-    }
+    }, 2000)
   }
 
   const handleReset = () => {
     setInputLink('')
     setIsConverted(false)
     setIsLoading(false)
-    setConversionResult(null)
-    setError(null)
     setCopiedPlatform(null)
     setDetectedPlatform(null)
+    setOriginalPlatform(null)
   }
 
   const handleClear = () => {
     setInputLink('')
     setDetectedPlatform(null)
-    setError(null)
   }
 
   const detectPlatform = (url: string): DetectedPlatform => {
     if (!url) return null;
     
-    const platform = detectPlatformFromUrl(url);
-    const color = getPlatformColor(platform);
-    
-    if (platform === 'spotify') {
-      return { name: 'Spotify', icon: Music, logo: spotifyLogo, color, bgColor: '#f0fff4' };
-    } else if (platform === 'apple') {
-      return { name: 'Apple Music', icon: Apple, logo: appleMusicLogo, color, bgColor: '#fff5f5' };
-    } else if (platform === 'youtube') {
-      return { name: 'YouTube Music', icon: Play, logo: youtubeMusicLogo, color, bgColor: '#fff5f5' };
-    } else if (platform === 'amazonMusic') {
-      return { name: 'Amazon Music', icon: Package, logo: amazonMusicLogo, color, bgColor: '#fffbf0' };
-    } else if (platform === 'tidal') {
-      return { name: 'Tidal', icon: Waves, logo: tidalLogo, color, bgColor: '#f0fffe' };
-    } else if (platform === 'deezer') {
-      return { name: 'Deezer', icon: Music2, logo: deezerLogo, color, bgColor: '#fffcf5' };
+    if (url.includes('spotify.com')) {
+      return { name: 'Spotify', icon: Music, logo: spotifyLogo, color: '#1DB954', bgColor: '#f0fff4' };
+    } else if (url.includes('music.apple.com') || url.includes('itunes.apple.com')) {
+      return { name: 'Apple Music', icon: Apple, logo: appleMusicLogo, color: '#FC3C44', bgColor: '#fff5f5' };
+    } else if (url.includes('music.youtube.com') || url.includes('youtube.com')) {
+      return { name: 'YouTube Music', icon: Play, logo: youtubeMusicLogo, color: '#FF0000', bgColor: '#fff5f5' };
+    } else if (url.includes('music.amazon.com') || url.includes('amazon.com')) {
+      return { name: 'Amazon Music', icon: Package, logo: amazonMusicLogo, color: '#FF9900', bgColor: '#fffbf0' };
+    } else if (url.includes('tidal.com') || url.includes('listen.tidal.com')) {
+      return { name: 'Tidal', icon: Waves, logo: tidalLogo, color: '#00D4AA', bgColor: '#f0fffe' };
+    } else if (url.includes('deezer.com')) {
+      return { name: 'Deezer', icon: Music2, logo: deezerLogo, color: '#FEAA2D', bgColor: '#fffcf5' };
     }
     return null;
   };
 
-  const copyPlatformLink = async (platform: string, url: string) => {
-    try {
-      await navigator.clipboard.writeText(url)
-      setCopiedPlatform(platform)
-      
-      if (showNotifications) {
-        console.log(`Copied ${platform} link to clipboard`)
-      }
-      
-      // Reset the copied state after 2.5 seconds
-      setTimeout(() => setCopiedPlatform(null), 2500)
-    } catch (err) {
-      console.error('Failed to copy link:', err)
-      setError('Failed to copy link to clipboard')
-    }
-  }
-
-  const handleShareConversion = async () => {
-    if (!conversionResult || !isShareSupported) return
-
-    const shared = await shareConversion({
-      title: conversionResult.track.title,
-      artist: conversionResult.track.artist,
-      originalPlatform: conversionResult.originalPlatform,
-      platformLinks: conversionResult.platformLinks,
-    })
-
-    if (!shared) {
-      // Fallback: copy to clipboard
-      const shareText = `🎵 ${conversionResult.track.title} by ${conversionResult.track.artist}\n\nListen on any platform: ${window.location.href}`
-      try {
-        await navigator.clipboard.writeText(shareText)
-        if (showNotifications) {
-          console.log('Conversion details copied to clipboard')
-        }
-      } catch (err) {
-        console.error('Failed to copy or share:', err)
-      }
-    }
+  const copyPlatformLink = (platform: string, url: string) => {
+    navigator.clipboard.writeText(url)
+    setCopiedPlatform(platform)
+    // Reset the copied state after 2.5 seconds
+    setTimeout(() => setCopiedPlatform(null), 2500)
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setInputLink(value);
     setDetectedPlatform(detectPlatform(value));
-    setError(null); // Clear any previous errors
   }
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -348,25 +260,14 @@ function App() {
 
       {/* Main Content */}
       <main className="container">
-        <div className={`card ${conversionResult ? `platform-${conversionResult.originalPlatform.toLowerCase().replace(/\s+/g, '')}` : ''}`}>
-          {conversionResult && (
+        <div className={`card ${originalPlatform ? `platform-${originalPlatform.name.toLowerCase().replace(/\s+/g, '')}` : ''}`}>
+          {originalPlatform && (
             <style>{`
-              .card.platform-${conversionResult.originalPlatform.toLowerCase().replace(/\s+/g, '')}::before {
-                background: linear-gradient(90deg, ${getPlatformColor(conversionResult.originalPlatform)}, ${getPlatformColor(conversionResult.originalPlatform)}) !important;
+              .card.platform-${originalPlatform.name.toLowerCase().replace(/\s+/g, '')}::before {
+                background: linear-gradient(90deg, ${originalPlatform.color}, ${originalPlatform.color}) !important;
               }
             `}</style>
           )}
-          
-          {/* Error Display */}
-          {error && (
-            <div className="error-message">
-              <p>{error}</p>
-              <button onClick={() => setError(null)}>
-                <X size={16} />
-              </button>
-            </div>
-          )}
-
           {/* Input Section */}
           {!isLoading && !isConverted && (
             <div className="input-section">
@@ -433,57 +334,44 @@ function App() {
                 <div className="bar"></div>
                 <div className="bar"></div>
               </div>
-              <p className="loading-text">
-                Finding your music across platforms...
-              </p>
+              <p className="loading-text">Finding your music across platforms...</p>
             </div>
           )}
 
           {/* Result Section */}
-          {isConverted && !isLoading && conversionResult && (
+          {isConverted && !isLoading && (
             <div className="result-section active">
               <div className="track-preview">
                 <div className="album-art">
-                  {conversionResult.track.artwork_url ? (
+                  {dummyConversion.albumArt.includes('placeholder') ? (
+                    <Music3 size={36} />
+                  ) : (
                     <img 
-                      src={conversionResult.track.artwork_url} 
+                      src={dummyConversion.albumArt} 
                       alt="Album art"
                       style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '12px' }}
                     />
-                  ) : (
-                    <Music3 size={36} />
                   )}
                 </div>
                 <div className="track-info">
-                  <div className="track-title">{conversionResult.track.title}</div>
-                  <div className="track-artist">{conversionResult.track.artist}</div>
+                  {dummyConversion.type === 'song' && (
+                    <div className="track-title">{dummyConversion.songTitle}</div>
+                  )}
+                  <div className="track-artist">{dummyConversion.artist}</div>
+                  <div className="track-album">{dummyConversion.album}</div>
                 </div>
               </div>
 
-              <div className="result-actions">
-                <p className="section-description">
-                  Click any platform to copy its link to your clipboard
-                </p>
-                
-                {isShareSupported && (
-                  <button 
-                    className="share-btn" 
-                    onClick={handleShareConversion}
-                    title="Share conversion"
-                  >
-                    <Share size={16} />
-                    Share All Links
-                  </button>
-                )}
-              </div>
+              <p className="section-description">
+                Click any platform to copy its link to your clipboard
+              </p>
 
               <div className="platforms-grid">
                 {platforms.map((platform) => {
-                  const link = conversionResult.platformLinks[platform.id];
+                  const linkKey = platform.id as keyof typeof dummyConversion.platformLinks;
+                  const link = dummyConversion.platformLinks[linkKey];
                   const isCopied = copiedPlatform === platform.id;
                   
-                  if (!link) return null;
-
                   return (
                     <button
                       key={platform.id}

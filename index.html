@@ -6,9 +6,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Share music across all platforms. Convert Spotify, Apple Music, YouTube links into universal ones that work for everyone." />
     <title>MusicFlip - Share Music Across All Platforms</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+    
+    <!-- Theme colors -->
+    <meta name="theme-color" content="#1DB584" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    
+    <!-- Apple PWA support -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="MusicFlip" />
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+    
+    <!-- Microsoft PWA support -->
+    <meta name="msapplication-TileColor" content="#1DB584" />
+    <meta name="msapplication-TileImage" content="/icons/icon-144x144.png" />
+    
+    <!-- Open Graph meta tags for sharing -->
+    <meta property="og:title" content="MusicFlip - Share Music Across All Platforms" />
+    <meta property="og:description" content="Convert Spotify, Apple Music, YouTube links into universal ones that work for everyone." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://musicflip.app" />
+    <meta property="og:image" content="/icons/icon-512x512.png" />
+    
+    <!-- Twitter Card meta tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="MusicFlip - Share Music Across All Platforms" />
+    <meta name="twitter:description" content="Convert Spotify, Apple Music, YouTube links into universal ones that work for everyone." />
+    <meta name="twitter:image" content="/icons/icon-512x512.png" />
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then((registration) => {
+              console.log('SW registered: ', registration);
+            })
+            .catch((registrationError) => {
+              console.log('SW registration failed: ', registrationError);
+            });
+        });
+      }
+    </script>
   </body>
 </html>
