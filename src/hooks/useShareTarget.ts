@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { isSupportedMusicUrl } from '../lib/songlink-api';
+import { isSupportedMusicUrl } from '../services/api/songlink-api';
 
 interface ShareTargetData {
   sharedUrl: string | null;
