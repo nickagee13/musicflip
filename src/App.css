@@ -627,33 +627,97 @@ body {
   margin-bottom: 2rem;
 }
 
+/* Staggered entrance animation for platform cards */
 .platform-btn {
   background: var(--platform-btn-bg);
   border: 2px solid var(--platform-btn-border);
   border-radius: 16px;
   padding: 1.5rem 1rem;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
   position: relative;
   overflow: hidden;
+  /* Initial state for entrance animation */
+  opacity: 0;
+  transform: translateY(30px) scale(0.9);
+  animation: platformEntranceStagger 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
+@keyframes platformEntranceStagger {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Animation delay classes for staggered effect */
+.platform-btn:nth-child(1) { animation-delay: 0.1s; }
+.platform-btn:nth-child(2) { animation-delay: 0.2s; }
+.platform-btn:nth-child(3) { animation-delay: 0.3s; }
+.platform-btn:nth-child(4) { animation-delay: 0.4s; }
+.platform-btn:nth-child(5) { animation-delay: 0.5s; }
+.platform-btn:nth-child(6) { animation-delay: 0.6s; }
+
 .platform-btn:hover {
-  transform: translateY(-4px);
+  transform: translateY(-8px) scale(1.03);
   box-shadow: var(--platform-btn-shadow);
 }
 
+/* Enhanced platform-specific hover effects with brand colors */
+.platform-btn.spotify:hover {
+  box-shadow: 0 15px 40px rgba(29, 185, 84, 0.3), 0 0 20px rgba(29, 185, 84, 0.2);
+  border-color: rgba(29, 185, 84, 0.5);
+}
+
+.platform-btn.apple:hover {
+  box-shadow: 0 15px 40px rgba(250, 36, 60, 0.3), 0 0 20px rgba(250, 36, 60, 0.2);
+  border-color: rgba(250, 36, 60, 0.5);
+}
+
+.platform-btn.youtube:hover {
+  box-shadow: 0 15px 40px rgba(255, 0, 0, 0.3), 0 0 20px rgba(255, 0, 0, 0.2);
+  border-color: rgba(255, 0, 0, 0.5);
+}
+
+.platform-btn.amazonMusic:hover {
+  box-shadow: 0 15px 40px rgba(255, 153, 0, 0.3), 0 0 20px rgba(255, 153, 0, 0.2);
+  border-color: rgba(255, 153, 0, 0.5);
+}
+
+.platform-btn.tidal:hover {
+  box-shadow: 0 15px 40px rgba(0, 212, 170, 0.3), 0 0 20px rgba(0, 212, 170, 0.2);
+  border-color: rgba(0, 212, 170, 0.5);
+}
+
+.platform-btn.deezer:hover {
+  box-shadow: 0 15px 40px rgba(254, 170, 45, 0.3), 0 0 20px rgba(254, 170, 45, 0.2);
+  border-color: rgba(254, 170, 45, 0.5);
+}
+
+/* Click/Active state animation */
+.platform-btn:active {
+  transform: translateY(-4px) scale(0.98);
+  transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Enhanced copy success animation */
 .platform-btn.copied {
-  animation: copySuccess 0.6s ease;
+  animation: copySuccess 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 @keyframes copySuccess {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
+  0% { transform: scale(1); }
+  30% { transform: scale(1.1) rotate(2deg); }
+  60% { transform: scale(1.05) rotate(-1deg); }
+  100% { transform: scale(1) rotate(0deg); }
 }
 
 .platform-btn.copied::after {
@@ -661,20 +725,36 @@ body {
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
-  background: var(--success-moment);
+  background: linear-gradient(135deg, var(--success-moment), #00C853);
   color: white;
-  padding: 0.25rem 0.5rem;
-  border-radius: 8px;
+  padding: 0.4rem 0.8rem;
+  border-radius: 12px;
   font-size: 0.75rem;
-  font-weight: 600;
-  animation: fadeOut 2s ease forwards;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(0, 230, 118, 0.4);
+  animation: copyBadgeAnimation 2.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
 }
 
-@keyframes fadeOut {
-  0% { opacity: 0; transform: scale(0.8); }
-  10% { opacity: 1; transform: scale(1); }
-  90% { opacity: 1; transform: scale(1); }
-  100% { opacity: 0; transform: scale(0.8); }
+@keyframes copyBadgeAnimation {
+  0% { 
+    opacity: 0; 
+    transform: scale(0.3) translateY(-10px); 
+  }
+  15% { 
+    opacity: 1; 
+    transform: scale(1.1) translateY(0); 
+  }
+  25% { 
+    transform: scale(1) translateY(0); 
+  }
+  85% { 
+    opacity: 1; 
+    transform: scale(1) translateY(0); 
+  }
+  100% { 
+    opacity: 0; 
+    transform: scale(0.8) translateY(-5px); 
+  }
 }
 
 .platform-icon {
