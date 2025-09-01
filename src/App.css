@@ -627,14 +627,13 @@ body {
   margin-bottom: 2rem;
 }
 
-/* Platform button base styles */
 .platform-btn {
   background: var(--platform-btn-bg);
   border: 2px solid var(--platform-btn-border);
   border-radius: 16px;
   padding: 1.5rem 1rem;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -645,12 +644,17 @@ body {
   transform: translateY(0) scale(1);
 }
 
-/* Entrance animation applied separately */
+/* Entrance animation for platform grid */
 .platforms-grid .platform-btn {
-  opacity: 0;
-  transform: translateY(30px) scale(0.9);
-  animation: platformEntranceStagger 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: platformEntranceStagger 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
 }
+
+.platforms-grid .platform-btn:nth-child(1) { animation-delay: 0.1s; }
+.platforms-grid .platform-btn:nth-child(2) { animation-delay: 0.2s; }
+.platforms-grid .platform-btn:nth-child(3) { animation-delay: 0.3s; }
+.platforms-grid .platform-btn:nth-child(4) { animation-delay: 0.4s; }
+.platforms-grid .platform-btn:nth-child(5) { animation-delay: 0.5s; }
+.platforms-grid .platform-btn:nth-child(6) { animation-delay: 0.6s; }
 
 @keyframes platformEntranceStagger {
   0% {
@@ -662,14 +666,6 @@ body {
     transform: translateY(0) scale(1);
   }
 }
-
-/* Animation delay classes for staggered effect */
-.platforms-grid .platform-btn:nth-child(1) { animation-delay: 0.1s; }
-.platforms-grid .platform-btn:nth-child(2) { animation-delay: 0.2s; }
-.platforms-grid .platform-btn:nth-child(3) { animation-delay: 0.3s; }
-.platforms-grid .platform-btn:nth-child(4) { animation-delay: 0.4s; }
-.platforms-grid .platform-btn:nth-child(5) { animation-delay: 0.5s; }
-.platforms-grid .platform-btn:nth-child(6) { animation-delay: 0.6s; }
 
 .platform-btn:hover {
   transform: translateY(-8px) scale(1.03);
