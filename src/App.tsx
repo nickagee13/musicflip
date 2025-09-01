@@ -19,9 +19,9 @@ const platforms = [
   { id: 'spotify', name: 'Spotify', logo: spotifyLogo, color: '#1DB954' },
   { id: 'apple', name: 'Apple Music', logo: appleMusicLogo, color: '#FA243C' },
   { id: 'youtube', name: 'YouTube Music', logo: youtubeMusicLogo, color: '#FF0000' },
-  { id: 'amazonMusic', name: 'Amazon Music', logo: amazonMusicLogo, color: '#FF9900' },
+  { id: 'amazonMusic', name: 'Amazon Music', logo: amazonMusicLogo, color: '#1eadc5' },
   { id: 'tidal', name: 'Tidal', logo: tidalLogo, color: '#00D4AA' },
-  { id: 'deezer', name: 'Deezer', logo: deezerLogo, color: '#FEAA2D' }
+  { id: 'deezer', name: 'Deezer', logo: deezerLogo, color: '#A238FF' }
 ]
 
 type DetectedPlatform = {
