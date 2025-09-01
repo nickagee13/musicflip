@@ -127,7 +127,14 @@ export async function convertMusicLink(originalUrl: string): Promise<ConversionR
     Object.entries(data.linksByPlatform).forEach(([platform, link]) => {
       const mappedPlatform = PLATFORM_MAPPING[platform];
       if (mappedPlatform) {
-        platformLinks[mappedPlatform] = link.url;
+        let url = link.url;
+        
+        // Ensure Apple Music links use US region
+        if (mappedPlatform === 'apple') {
+          url = normalizeAppleMusicUrl(url);
+        }
+        
+        platformLinks[mappedPlatform] = url;
       }
     });
 
@@ -201,4 +208,26 @@ export function getPlatformColor(platform: string): string {
   };
 
   return colors[platform] || '#666666';
+}
+
+// Normalize Apple Music URLs to use US region
+function normalizeAppleMusicUrl(url: string): string {
+  // Apple Music URLs have format: https://music.apple.com/[country]/...
+  // We want to ensure they use the US region
+  
+  // Replace any country code with 'us'
+  const normalizedUrl = url.replace(
+    /https:\/\/music\.apple\.com\/[a-z]{2}(\/.*)?/i,
+    'https://music.apple.com/us$1'
+  );
+  
+  // If it's an itunes.apple.com URL, convert it to music.apple.com with US region
+  if (url.includes('itunes.apple.com')) {
+    return normalizedUrl.replace(
+      /https:\/\/itunes\.apple\.com\/[a-z]{2}(\/.*)?/i,
+      'https://music.apple.com/us$1'
+    );
+  }
+  
+  return normalizedUrl;
 }

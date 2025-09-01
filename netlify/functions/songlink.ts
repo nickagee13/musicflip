@@ -37,8 +37,8 @@ export const handler: Handler = async (event, context) => {
       };
     }
 
-    // Call Songlink API
-    const apiUrl = `https://api.song.link/v1-alpha.1/links?url=${encodeURIComponent(url)}`;
+    // Call Songlink API with US region preference
+    const apiUrl = `https://api.song.link/v1-alpha.1/links?url=${encodeURIComponent(url)}&userCountry=US`;
     const response = await fetch(apiUrl, {
       method: 'GET',
       headers: {
