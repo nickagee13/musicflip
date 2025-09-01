@@ -191,8 +191,8 @@ function App() {
         console.log(`Copied ${platform} link to clipboard`)
       }
       
-      // Reset the copied state after 1.5 seconds
-      setTimeout(() => setCopiedPlatform(null), 1500)
+      // Reset the copied state after 1 second
+      setTimeout(() => setCopiedPlatform(null), 1000)
     } catch (err) {
       console.error('Failed to copy link:', err)
       setError('Failed to copy link to clipboard')

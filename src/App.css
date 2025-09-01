@@ -644,28 +644,7 @@ body {
   transform: translateY(0) scale(1);
 }
 
-/* Entrance animation for platform grid */
-.platforms-grid .platform-btn {
-  animation: platformEntranceStagger 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
-}
-
-.platforms-grid .platform-btn:nth-child(1) { animation-delay: 0.1s; }
-.platforms-grid .platform-btn:nth-child(2) { animation-delay: 0.2s; }
-.platforms-grid .platform-btn:nth-child(3) { animation-delay: 0.3s; }
-.platforms-grid .platform-btn:nth-child(4) { animation-delay: 0.4s; }
-.platforms-grid .platform-btn:nth-child(5) { animation-delay: 0.5s; }
-.platforms-grid .platform-btn:nth-child(6) { animation-delay: 0.6s; }
-
-@keyframes platformEntranceStagger {
-  0% {
-    opacity: 0;
-    transform: translateY(30px) scale(0.9);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
+/* Entrance animation temporarily removed to debug disappearing issue */
 
 .platform-btn:hover {
   transform: translateY(-8px) scale(1.03);
@@ -709,16 +688,15 @@ body {
   transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Enhanced copy success animation - button stays visible */
+/* Simplified copy success animation for debugging */
 .platform-btn.copied {
-  animation: copySuccess 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  animation: copySuccess 0.3s ease-out;
 }
 
 @keyframes copySuccess {
   0% { transform: scale(1); }
-  30% { transform: scale(1.05) rotate(1deg); }
-  60% { transform: scale(1.02) rotate(-0.5deg); }
-  100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
 }
 
 .platform-btn.copied::after {
@@ -733,28 +711,25 @@ body {
   font-size: 0.75rem;
   font-weight: 700;
   box-shadow: 0 4px 12px rgba(0, 230, 118, 0.4);
-  animation: copyBadgeAnimation 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+  animation: copyBadgeAnimation 1s ease-out forwards;
 }
 
 @keyframes copyBadgeAnimation {
   0% { 
     opacity: 0; 
-    transform: scale(0.3) translateY(-10px); 
-  }
-  20% { 
-    opacity: 1; 
-    transform: scale(1.1) translateY(0); 
+    transform: scale(0.5) translateY(-5px); 
   }
   30% { 
+    opacity: 1; 
     transform: scale(1) translateY(0); 
   }
-  80% { 
+  70% { 
     opacity: 1; 
     transform: scale(1) translateY(0); 
   }
   100% { 
     opacity: 0; 
-    transform: scale(0.8) translateY(-5px); 
+    transform: scale(0.9) translateY(-3px); 
   }
 }
 
