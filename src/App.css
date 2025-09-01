@@ -627,7 +627,7 @@ body {
   margin-bottom: 2rem;
 }
 
-/* Staggered entrance animation for platform cards */
+/* Platform button base styles */
 .platform-btn {
   background: var(--platform-btn-bg);
   border: 2px solid var(--platform-btn-border);
@@ -641,7 +641,12 @@ body {
   gap: 0.5rem;
   position: relative;
   overflow: hidden;
-  /* Initial state for entrance animation */
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Entrance animation applied separately */
+.platforms-grid .platform-btn {
   opacity: 0;
   transform: translateY(30px) scale(0.9);
   animation: platformEntranceStagger 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
@@ -659,12 +664,12 @@ body {
 }
 
 /* Animation delay classes for staggered effect */
-.platform-btn:nth-child(1) { animation-delay: 0.1s; }
-.platform-btn:nth-child(2) { animation-delay: 0.2s; }
-.platform-btn:nth-child(3) { animation-delay: 0.3s; }
-.platform-btn:nth-child(4) { animation-delay: 0.4s; }
-.platform-btn:nth-child(5) { animation-delay: 0.5s; }
-.platform-btn:nth-child(6) { animation-delay: 0.6s; }
+.platforms-grid .platform-btn:nth-child(1) { animation-delay: 0.1s; }
+.platforms-grid .platform-btn:nth-child(2) { animation-delay: 0.2s; }
+.platforms-grid .platform-btn:nth-child(3) { animation-delay: 0.3s; }
+.platforms-grid .platform-btn:nth-child(4) { animation-delay: 0.4s; }
+.platforms-grid .platform-btn:nth-child(5) { animation-delay: 0.5s; }
+.platforms-grid .platform-btn:nth-child(6) { animation-delay: 0.6s; }
 
 .platform-btn:hover {
   transform: translateY(-8px) scale(1.03);
