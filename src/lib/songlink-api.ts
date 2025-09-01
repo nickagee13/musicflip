@@ -43,7 +43,10 @@ interface ConversionResult {
   error?: string;
 }
 
-const SONGLINK_API_BASE = 'https://api.song.link/v1-alpha.1/links';
+// Use proxy in production, direct API in development
+const SONGLINK_API_BASE = import.meta.env.DEV 
+  ? 'https://api.song.link/v1-alpha.1/links'
+  : '/api/songlink';
 
 // Platform mapping for consistent naming
 const PLATFORM_MAPPING: { [key: string]: string } = {
