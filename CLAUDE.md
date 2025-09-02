@@ -117,11 +117,6 @@ src/
 
 ---
 *This file is automatically read by Claude Code on startup to maintain context between sessions.*
-### Latest Commit
-b0be939 Add Claude Code session persistence system
 
 ### Latest Commit
-ffddc12 Add development role and workflow context to CLAUDE.md
-
-### Latest Commit
-a5e19df Update latest commit info from git hooks
+8883efa Fix git hook duplicate commit tracking
