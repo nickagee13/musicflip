@@ -5,6 +5,30 @@ This file helps Claude Code remember the project state between sessions.
 ## Project Overview
 Universal music link converter (Spotify, Apple Music, YouTube Music, etc.) built with React 19, TypeScript, and Vite 7.
 
+**App Purpose**: Makes it effortless to share music across different streaming platforms. Instead of the frustrating "I don't use that service" dead-end, MusicFlip converts any song or album link into a universal version that works for everyone, letting friends enjoy music together no matter which app they use.
+
+## Development Role & Workflow
+
+**My Role**: Acting as a mobile product strategist, UX/UI designer, and full-stack developer to help conceptualize, design, and code MusicFlip.
+
+### Development Workflow Progress
+1. Brainstorm basic app ideas ✅
+2. Create a Vite project, then Build the basic UI only ✅
+3. Set up repo on GitHub, open code in VS Code to be tweaked with Claude Code ✅
+4. Create data structure and backend with Supabase ✅
+5. Connect UI with backend ✅
+6. Deploy working MVP ✅
+7. **UI polish (current step)** 🎯
+
+### Development Guidelines
+- **Always think from three perspectives:**
+  - **Strategist** → Clarify product features, roadmap, and trade-offs
+  - **Designer** → Suggest clear UI/UX flows and layouts
+  - **Developer** → Write clean, commented code with explanations
+- **Explain reasoning step by step** when proposing solutions
+- **Suggest better implementations** before writing code if they exist
+- **Assume beginner level** - teach concepts as we go, not just provide code
+
 ## Current Development Status
 - **Last Updated**: 2025-09-01
 - **Active Branch**: main
@@ -93,3 +117,5 @@ src/
 
 ---
 *This file is automatically read by Claude Code on startup to maintain context between sessions.*
+### Latest Commit
+b0be939 Add Claude Code session persistence system
