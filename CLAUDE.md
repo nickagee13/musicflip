@@ -119,3 +119,6 @@ src/
 *This file is automatically read by Claude Code on startup to maintain context between sessions.*
 ### Latest Commit
 b0be939 Add Claude Code session persistence system
+
+### Latest Commit
+ffddc12 Add development role and workflow context to CLAUDE.md
